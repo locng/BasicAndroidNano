@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">A1_L3_QuizApp</string>
+    <string name="empty_string">""</string>
+    <string name="q1">"In which decade was the American Institute of Electrical Engineers (AIEE) founded?"</string>
+    <string-array name="q1_option">
+        <item>"1880s"</item>
+        <item>"1930s"</item>
+        <item>"1850s"</item>
+        <item>"1950s"</item>
+    </string-array>
+    <string name="q2">"Who is largely responsible for breaking the German Enigma codes, created a test that provided a foundation for artificial intelligence?"</string>
+    <string-array name="q2_option">
+        <item>"Alan Turing"</item>
+        <item>"Jeff Bezos"</item>
+        <item>"George Boole"</item>
+        <item>"Charles Babbage"</item>
+    </string-array>
+    <string name="q3">"What are parts of a database that hold more than one type of information?"</string>
+    <string-array name="q3_option">
+        <item>"Report"</item>
+        <item>"Field"</item>
+        <item>"Record"</item>
+        <item>"File"</item>
+    </string-array>
+    <string name="q4">"\'OS\' computer abbreviation usually means ?"</string>
+    <string name="str_submit">Submit</string>
+
+</resources>
