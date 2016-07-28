@@ -125,13 +125,18 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         public android.support.v4.app.Fragment getItem(int position) {
             Log.d(TAG, "getItem() " + position);
             //TODO: hardcoded here, need to update later
-            if (position == 0)
-                return PlaylistFragment.newInstance(null, 0);
-            else if (position == 3)
-                return SongsFragment.newInstance(1);
-            else
-                return PlaylistFragment.newInstance(null, 0);
-
+            switch (position){
+                case 0:
+                    return PlaylistFragment.newInstance(null, 0);
+                case 1:
+                    return ArtistsActivity.newInstance(1);
+                case 2:
+                    return AlbumsActivity.newInstance(1);
+                case 3:
+                    return SongsFragment.newInstance(1);
+                default:
+                    return PlaylistFragment.newInstance(null, 0);
+            }
         }
 
         @Override

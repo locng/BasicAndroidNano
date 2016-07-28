@@ -10,6 +10,7 @@ import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -66,18 +67,18 @@ public class PlaylistFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_playlist, container, false);
-        coverCardView = (CardView) view.findViewById(R.id.cardview);
-        coverCardView.setOnClickListener(new View.OnClickListener() {
+        Button openButton1 = (Button) view.findViewById(R.id.open1);
+        openButton1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getActivity(), DetailPlaylist.class);
-                i.putExtra("PLAYLIST_NAME", "Happy!!!");
+                i.putExtra("PLAYLIST_NAME", "Happy");
                 startActivity(i);
 
             }
         });
-        CardView coverCardView1 = (CardView) view.findViewById(R.id.cardview1);
-        coverCardView1.setOnClickListener(new View.OnClickListener() {
+        Button openButton2 = (Button) view.findViewById(R.id.open2);
+        openButton2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getActivity(), DetailPlaylist.class);
