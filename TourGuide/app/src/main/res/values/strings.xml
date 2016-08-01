@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">TourGuide</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+    <string name="name_club">Coco Paradise Beach Club</string>
+    <string name="address">58 Nguyen Dinh Chieu, Ward Ham Tien, Binh Thuan</string>
+    <string name="phone_number">+84 (0) 62 3847 111</string>
+    <string name="email">paradise@cocobeach.net</string>
+    <string name="club_info">Come Out \u0026 Play\nBeach- Camping -Restaurant \nBar \u0026 Cafe</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
