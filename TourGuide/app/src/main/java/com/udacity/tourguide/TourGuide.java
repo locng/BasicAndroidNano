@@ -21,7 +21,7 @@ import java.util.ArrayList;
 public class TourGuide extends AppCompatActivity
         implements AdapterView.OnItemClickListener, AttractionFragment.OnCategorySelectedListener {
 
-    ArrayList<AttractionPoints> points;
+    ArrayList<AttractionPoint> points;
     int currentPosition = 0;
 
     @Override
@@ -36,10 +36,10 @@ public class TourGuide extends AppCompatActivity
         // Create 4 category
         points = new ArrayList<>();
 
-        points.add(createPoint(AttractionPoints.RESTAURANT));
-        points.add(createPoint(AttractionPoints.HOTEL));
-        points.add(createPoint(AttractionPoints.SHOPPING));
-        points.add(createPoint(AttractionPoints.SIGHT_SEEING));
+        points.add(createPoint(AttractionPoint.RESTAURANT));
+        points.add(createPoint(AttractionPoint.HOTEL));
+        points.add(createPoint(AttractionPoint.SHOPPING));
+        points.add(createPoint(AttractionPoint.SIGHT_SEEING));
 
         CategoryAdapter pointsAdapter = new CategoryAdapter(getApplication(), points);
 
@@ -53,24 +53,24 @@ public class TourGuide extends AppCompatActivity
         toggle.syncState();
     }
 
-    private AttractionPoints createPoint(int category) {
+    private AttractionPoint createPoint(int category) {
         Resources res = getResources();
-        if (category == AttractionPoints.RESTAURANT) {
+        if (category == AttractionPoint.RESTAURANT) {
             String str[] = res.getStringArray(R.array.restaurant);
-            return new AttractionPoints(category, str[1], str[2], Double.valueOf(str[3]), Double.valueOf(str[4]),
+            return new AttractionPoint(category, str[1], str[2], Double.valueOf(str[3]), Double.valueOf(str[4]),
                     R.drawable.ic_restaurant, 0);
-        } else if (category == AttractionPoints.HOTEL) {
+        } else if (category == AttractionPoint.HOTEL) {
             String str[] = res.getStringArray(R.array.hotel);
-            return new AttractionPoints(category, str[1], str[2], Double.valueOf(str[3]), Double.valueOf(str[4]),
+            return new AttractionPoint(category, str[1], str[2], Double.valueOf(str[3]), Double.valueOf(str[4]),
                     R.drawable.ic_hotel, 0);
-        } else if (category == AttractionPoints.SHOPPING) {
+        } else if (category == AttractionPoint.SHOPPING) {
             String str[] = res.getStringArray(R.array.shopping);
-            return new AttractionPoints(category, str[1], str[2], Double.valueOf(str[3]), Double.valueOf(str[4]),
+            return new AttractionPoint(category, str[1], str[2], Double.valueOf(str[3]), Double.valueOf(str[4]),
                     R.drawable.ic_shopping, 0);
         } else {
             String str[] = res.getStringArray(R.array.sightseeing);
-            return new AttractionPoints(category, str[1], str[2], Double.valueOf(str[3]), Double.valueOf(str[4]),
-                    R.drawable.ic_history, R.drawable.opera_house);
+            return new AttractionPoint(category, str[1], str[2], Double.valueOf(str[3]), Double.valueOf(str[4]),
+                    R.drawable.ic_history, R.raw.opera_house);
         }
     }
 
@@ -131,7 +131,7 @@ public class TourGuide extends AppCompatActivity
     }
 
     @Override
-    public AttractionPoints onCategorySelected() {
+    public AttractionPoint onCategorySelected() {
         return points.get(currentPosition);
     }
 }

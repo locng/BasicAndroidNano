@@ -5,7 +5,7 @@ import android.location.Location;
 /**
  * Created by nloc on 8/2/2016.
  */
-public class AttractionPoints {
+public class AttractionPoint {
 
     public static final int RESTAURANT = 1;
     public static final int HOTEL = 2;
@@ -20,8 +20,8 @@ public class AttractionPoints {
     int ImageResId = 0;
     int locationResId;
 
-    public AttractionPoints(int category, String name, String addressName, double longitude,
-                            double latitude, int locationResId, int ImageResId) {
+    public AttractionPoint(int category, String name, String addressName, double longitude,
+                           double latitude, int locationResId, int ImageResId) {
         this.category = category;
         this.name = name;
         this.addressName = addressName;

@@ -13,12 +13,12 @@ import java.util.List;
 /**
  * Created by nloc on 8/2/2016.
  */
-public class CategoryAdapter extends ArrayAdapter<AttractionPoints> {
-    public CategoryAdapter(Context context, int resource, List<AttractionPoints> objects) {
+public class CategoryAdapter extends ArrayAdapter<AttractionPoint> {
+    public CategoryAdapter(Context context, int resource, List<AttractionPoint> objects) {
         super(context, resource, objects);
     }
 
-    public CategoryAdapter(Context context, List<AttractionPoints> objects) {
+    public CategoryAdapter(Context context, List<AttractionPoint> objects) {
         super(context, 0, objects);
     }
 
@@ -29,7 +29,7 @@ public class CategoryAdapter extends ArrayAdapter<AttractionPoints> {
             listView = LayoutInflater.from(getContext()).inflate(R.layout.list_category, parent, false);
         }
 
-        AttractionPoints point = getItem(position);
+        AttractionPoint point = getItem(position);
         ImageView icon = (ImageView) listView.findViewById(R.id.icon_cat);
         icon.setImageResource(point.getLocationResId());
         icon.setAlpha(0.75f);

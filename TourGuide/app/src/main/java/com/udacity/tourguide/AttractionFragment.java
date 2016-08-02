@@ -1,17 +1,15 @@
 package com.udacity.tourguide;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.net.Uri;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.ListView;
 
-import java.util.Locale;
+import java.util.ArrayList;
 
 
 /**
@@ -82,44 +80,78 @@ public class AttractionFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         if (container == null) return null;
+
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.content_tour_guide, container, false);
-        final AttractionPoints point = listener.onCategorySelected();
+        View v = inflater.inflate(R.layout.list_contents, container, false);
 
-        ImageView coverPhoto = (ImageView) v.findViewById(R.id.photo);
-        if (point.hasCoverPhoto()) {
-            coverPhoto.setImageResource(point.getImageResId());
-        }
+        final AttractionPoint categorySelected = listener.onCategorySelected();
+        int category = categorySelected.getCategory();
 
-        //Update icon based on type of location
-        ImageView iconName = (ImageView) v.findViewById(R.id.icon_name);
-        iconName.setImageResource(point.getLocationResId());
-        //Update location name
-        TextView textName = (TextView) v.findViewById(R.id.text_name);
-        textName.setText(point.getName());
+        ArrayList<AttractionPoint> points = newAttraction(category);
 
-        ImageView iconPlace = (ImageView) v.findViewById(R.id.icon_place);
-        //Update location address
-        TextView textPlace = (TextView) v.findViewById(R.id.text_place);
-        textPlace.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Open the map if address get clicked
-                double latitude = point.getLatitude();
-                double longitude = point.getLongitude();
+        AttractionPointsAdapter adapter = new AttractionPointsAdapter(getActivity(), points);
 
-                String uri = String.format(Locale.ENGLISH, "http://maps.google.com/maps?daddr=%f,%f", latitude, longitude);
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
-                startActivity(intent);
-            }
-        });
-        textPlace.setText(point.getAddressName());
+        ListView listView = (ListView) v.findViewById(R.id.list);
+
+        listView.setAdapter(adapter);
 
         return v;
     }
 
+
+    //RQ:App contains at least 4 lists of relevant attractions for a location
+    private ArrayList<AttractionPoint> newAttraction(int category) {
+
+        ArrayList<AttractionPoint> points = new ArrayList<>();
+        Resources res = getContext().getResources();
+
+        if (category == AttractionPoint.RESTAURANT) {
+            points.add(new AttractionPoint(category, res.getString(R.string.name_res1),
+                    res.getString(R.string.addr_res1), Double.valueOf(R.string.default_long),
+                    Double.valueOf(R.string.default_lat),
+                    R.drawable.ic_restaurant, R.raw.paradise_beach_club));
+            points.add(new AttractionPoint(category, res.getString(R.string.name_res2),
+                    res.getString(R.string.addr_res2), Double.valueOf(R.string.default_long),
+                    Double.valueOf(R.string.default_lat),
+                    R.drawable.ic_restaurant, R.raw.la_villa_french));
+
+        } else if (category == AttractionPoint.HOTEL) {
+            points.add(new AttractionPoint(category, res.getString(R.string.name_hotel1),
+                    res.getString(R.string.addr_hotel1), Double.valueOf(R.string.default_long),
+                    Double.valueOf(R.string.default_lat),
+                    R.drawable.ic_hotel, 0));
+            points.add(new AttractionPoint(category, res.getString(R.string.name_hotel2),
+                    res.getString(R.string.addr_hotel2), Double.valueOf(R.string.default_long),
+                    Double.valueOf(R.string.default_lat),
+                    R.drawable.ic_hotel, 0));
+
+        } else if (category == AttractionPoint.SHOPPING) {
+            points.add(new AttractionPoint(category, res.getString(R.string.name_shop1),
+                    res.getString(R.string.addr_shop2), Double.valueOf(R.string.default_long),
+                    Double.valueOf(R.string.default_lat),
+                    R.drawable.ic_shopping, 0));
+            points.add(new AttractionPoint(category, res.getString(R.string.name_shop2),
+                    res.getString(R.string.addr_shop2), Double.valueOf(R.string.default_long),
+                    Double.valueOf(R.string.default_lat),
+                    R.drawable.ic_shopping, 0));
+
+        } else {
+            points.add(new AttractionPoint(category, res.getString(R.string.name_sin1),
+                    res.getString(R.string.addr_sin1), Double.valueOf(R.string.default_long),
+                    Double.valueOf(R.string.default_lat),
+                    R.drawable.ic_history, R.raw.opera_house));
+            points.add(new AttractionPoint(category, res.getString(R.string.name_sin2),
+                    res.getString(R.string.addr_sin2), Double.valueOf(R.string.default_long),
+                    Double.valueOf(R.string.default_lat),
+                    R.drawable.ic_history, 0));
+
+        }
+        return points;
+    }
+
     public interface OnCategorySelectedListener {
-        public AttractionPoints onCategorySelected();
+        AttractionPoint onCategorySelected();
     }
 }

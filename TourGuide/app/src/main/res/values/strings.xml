@@ -18,6 +18,7 @@
         <item>37.7749</item>
         <item>-122.4194</item>
     </string-array>
+
     <string-array name="hotel">
         <item>2</item>
         <item>Park Hyatt Saigon</item>
@@ -39,4 +40,27 @@
         <item>34.4f</item>
         <item>23.4f</item>
     </string-array>
+
+    <string name="name_res1">La Villa French</string>
+    <string name="addr_res1">6 Thi Sach St.,Ben Nghe</string>
+    <string name="name_res2">Hum Vegetarian, Lounge &amp; Restaurant</string>
+    <string name="addr_res2">2 Thi Sach St.,Ben Nghe</string>
+
+    <string name="name_hotel1">Park Hyatt Saigon</string>
+    <string name="addr_hotel1">2 Lam Son Square, District 1</string>
+    <string name="name_hotel2">Hum Vegetarian, Lounge &amp; Restaurant</string>
+    <string name="addr_hotel2">2 Thi Sach St.,Ben Nghe</string>
+
+    <string name="name_shop1">Saigon on Bikes</string>
+    <string name="addr_shop1">114 Nguyen Che Nghia Street</string>
+    <string name="name_shop2">Hum Vegetarian, Lounge &amp; Restaurant</string>
+    <string name="addr_shop2">2 Thi Sach St.,Ben Nghe</string>
+
+    <string name="name_sin1">Saigon Opera House</string>
+    <string name="addr_sin1">Intersection of Le Loi and Dong Khoi Sts</string>
+    <string name="name_sin2">Hum Vegetarian, Lounge &amp; Restaurant</string>
+    <string name="addr_sin2">2 Thi Sach St.,Ben Nghe</string>
+
+    <string name="default_long">37.7749</string>
+    <string name="default_lat">-122.4194</string>
 </resources>
