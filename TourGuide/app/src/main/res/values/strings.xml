@@ -14,4 +14,33 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string-array name="restaurant">
+        <item>1</item>
+        <item>1Coco Paradise Beach Club</item>
+        <item>58 Nguyen Dinh Chieu, Ward Ham Tien, Binh Thuan</item>
+        <item>34.4f</item>
+        <item>23.4f</item>
+    </string-array>
+    <string-array name="hotel">
+        <item>2</item>
+        <item>2Coco Paradise Beach Club</item>
+        <item>58 Nguyen Dinh Chieu, Ward Ham Tien, Binh Thuan</item>
+        <item>34.4f</item>
+        <item>23.4f</item>
+    </string-array>
+    <string-array name="shopping">
+        <item>3</item>
+        <item>3Coco Paradise Beach Club</item>
+        <item>58 Nguyen Dinh Chieu, Ward Ham Tien, Binh Thuan</item>
+        <item>34.4f</item>
+        <item>23.4f</item>
+    </string-array>
+    <string-array name="sightseeing">
+        <item>4</item>
+        <item>4Coco Paradise Beach Club</item>
+        <item>58 Nguyen Dinh Chieu, Ward Ham Tien, Binh Thuan</item>
+        <item>34.4f</item>
+        <item>23.4f</item>
+    </string-array>
 </resources>

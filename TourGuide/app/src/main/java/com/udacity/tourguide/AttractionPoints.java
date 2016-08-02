@@ -9,10 +9,10 @@ import android.location.LocationProvider;
  */
 public class AttractionPoints {
 
-    private static final int RESTAURANT = 1;
-    private static final int HOTEL = 2;
-    private static final int SHOPPING = 3;
-    private static final int SIGHT_SEEING = 4;
+    public static final int RESTAURANT = 1;
+    public static final int HOTEL = 2;
+    public static final int SHOPPING = 3;
+    public static final int SIGHT_SEEING = 4;
 
 
     int category;
@@ -20,6 +20,14 @@ public class AttractionPoints {
     String addressName;
     double longitude;
     double latitude;
+
+    public AttractionPoints( int category, String name, String addressName, double longitude, double latitude){
+        this.category = category;
+        this.name = name;
+        this.addressName = addressName;
+        this.longitude = longitude;
+        this.latitude = latitude;
+    }
 
     public Location getLocation() {
         Location l = new Location(name);
@@ -30,6 +38,18 @@ public class AttractionPoints {
 
     public int getCategory(){
         return category;
+    }
+
+    public String getCategoryAsString(int category) {
+        if (category == RESTAURANT){
+            return "restaurant";
+        } else if (category == HOTEL) {
+            return "hotel";
+        } else if (category == SHOPPING) {
+            return "shopping";
+        } else {
+            return "sight-seeing";
+        }
     }
 
     public String getName(){

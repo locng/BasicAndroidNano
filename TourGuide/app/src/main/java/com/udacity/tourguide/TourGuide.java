@@ -1,5 +1,6 @@
 package com.udacity.tourguide;
 
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -14,9 +15,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+
+import java.util.ArrayList;
 
 public class TourGuide extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, AdapterView.OnItemClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,13 +32,47 @@ public class TourGuide extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+
+        // Create 4 category
+        ArrayList<AttractionPoints> points = new ArrayList<AttractionPoints>();
+
+        points.add(createPoint(AttractionPoints.RESTAURANT));
+        points.add(createPoint(AttractionPoints.HOTEL));
+        points.add(createPoint(AttractionPoints.SHOPPING));
+        points.add(createPoint(AttractionPoints.SIGHT_SEEING));
+
+        AttractionPointsAdapter pointsAdapter = new AttractionPointsAdapter(getApplication(),points);
+
+        ListView navigationView = (ListView) findViewById(R.id.nav_view);
+        navigationView.setAdapter(pointsAdapter);
+        navigationView.setOnItemClickListener(this);
+
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //getSupportActionBar().setHomeButtonEnabled(true);
+    }
+
+    private AttractionPoints createPoint(int category){
+        Resources res = getResources();
+        if (category == AttractionPoints.RESTAURANT) {
+        String str[] = res.getStringArray(R.array.restaurant);
+            return new AttractionPoints(category, str[1],str[2], Double.valueOf(str[3]),Double.valueOf(str[4]));
+        } else if (category == AttractionPoints.HOTEL) {
+            String str[] = res.getStringArray(R.array.hotel);
+            return new AttractionPoints(category, str[1],str[2], Double.valueOf(str[3]),Double.valueOf(str[4]));
+        } else if (category == AttractionPoints.SHOPPING) {
+            String str[] = res.getStringArray(R.array.shopping);
+            return new AttractionPoints(category, str[1],str[2], Double.valueOf(str[3]),Double.valueOf(str[4]));
+        } else {
+            String str[] = res.getStringArray(R.array.sightseeing);
+            return new AttractionPoints(category, str[1],str[2], Double.valueOf(str[3]),Double.valueOf(str[4]));
+        }
     }
 
     @Override
@@ -101,4 +141,8 @@ public class TourGuide extends AppCompatActivity
         return true;
     }
 
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+    }
 }

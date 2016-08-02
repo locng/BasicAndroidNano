@@ -13,14 +13,36 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <!-- android:layout_gravity="start" tells DrawerLayout to treat
+         this as a sliding drawer on the left side for left-to-right
+         languages and on the right side for right-to-left languages.
+         The drawer is given a fixed width in dp and extends the full height of
+         the container. A solid background is used for contrast
+         with the content view. -->
     <android.support.design.widget.NavigationView
-        android:id="@+id/nav_view"
+        android:id="@+id/nav_view1"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:fitsSystemWindows="true"
-        app:headerLayout="@layout/nav_header_tour_guide"
-        app:menu="@menu/activity_tour_guide_drawer"
-        />
+        android:fitsSystemWindows="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+        <include layout="@layout/nav_header_tour_guide"
+            android:id="@+id/added"></include>
+        <ListView
+            android:id="@+id/nav_view"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_gravity="start"
+            android:fitsSystemWindows="true"
+            android:headerDividersEnabled="false"
+            />
+        </LinearLayout>
+    </android.support.design.widget.NavigationView>
+
 
 </android.support.v4.widget.DrawerLayout>
