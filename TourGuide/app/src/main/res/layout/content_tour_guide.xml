@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:orientation="vertical"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.udacity.tourguide.TourGuide"
+    tools:showIn="@layout/app_bar_tour_guide">
+
+    <ImageView
+        android:id="@+id/photo"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/paradise_beach_club" />
+
+    <LinearLayout
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="8dp">
+
+        <ImageView
+            android:id="@+id/icon_name"
+            style="@style/IconFormat"
+            android:src="@drawable/ic_restaurant" />
+
+        <TextView
+            android:id="@+id/text_name"
+            style="@style/TextFormat" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/id_place"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="8dp">
+
+        <ImageView
+            android:id="@+id/icon_place"
+            style="@style/IconFormat"
+            android:src="@drawable/ic_place" />
+
+        <TextView
+            android:id="@+id/text_place"
+            style="@style/TextFormat" />
+    </LinearLayout>
+
+</LinearLayout>
