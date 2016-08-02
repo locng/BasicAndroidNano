@@ -8,38 +8,34 @@
 
     <string name="name_club">Coco Paradise Beach Club</string>
     <string name="address">58 Nguyen Dinh Chieu, Ward Ham Tien, Binh Thuan</string>
-    <string name="phone_number">+84 (0) 62 3847 111</string>
-    <string name="email">paradise@cocobeach.net</string>
-    <string name="club_info">Come Out \u0026 Play\nBeach- Camping -Restaurant \nBar \u0026 Cafe</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string-array name="restaurant">
         <item>1</item>
-        <item>1Coco Paradise Beach Club</item>
-        <item>58 Nguyen Dinh Chieu, Ward Ham Tien, Binh Thuan</item>
-        <item>34.4f</item>
-        <item>23.4f</item>
+        <item>Hum Vegetarian, Lounge &amp; Restaurant</item>
+        <item>2 Thi Sach St.,Ben Nghe</item>
+        <item>37.7749</item>
+        <item>-122.4194</item>
     </string-array>
     <string-array name="hotel">
         <item>2</item>
-        <item>2Coco Paradise Beach Club</item>
-        <item>58 Nguyen Dinh Chieu, Ward Ham Tien, Binh Thuan</item>
+        <item>Park Hyatt Saigon</item>
+        <item>2 Lam Son Square, District 1</item>
         <item>34.4f</item>
         <item>23.4f</item>
     </string-array>
     <string-array name="shopping">
         <item>3</item>
-        <item>3Coco Paradise Beach Club</item>
-        <item>58 Nguyen Dinh Chieu, Ward Ham Tien, Binh Thuan</item>
+        <item>Saigon on Bikes</item>
+        <item>114 Nguyen Che Nghia Street</item>
         <item>34.4f</item>
         <item>23.4f</item>
     </string-array>
     <string-array name="sightseeing">
         <item>4</item>
-        <item>4Coco Paradise Beach Club</item>
-        <item>58 Nguyen Dinh Chieu, Ward Ham Tien, Binh Thuan</item>
+        <item>Saigon Opera House</item>
+        <item>Intersection of Le Loi and Dong Khoi Sts</item>
         <item>34.4f</item>
         <item>23.4f</item>
     </string-array>

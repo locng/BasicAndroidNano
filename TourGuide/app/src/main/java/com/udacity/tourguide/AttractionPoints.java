@@ -1,8 +1,6 @@
 package com.udacity.tourguide;
 
 import android.location.Location;
-import android.location.LocationManager;
-import android.location.LocationProvider;
 
 /**
  * Created by nloc on 8/2/2016.
@@ -14,49 +12,62 @@ public class AttractionPoints {
     public static final int SHOPPING = 3;
     public static final int SIGHT_SEEING = 4;
 
-
     int category;
     String name;
     String addressName;
     double longitude;
     double latitude;
+    int ImageResId = 0;
+    int locationResId;
 
-    public AttractionPoints( int category, String name, String addressName, double longitude, double latitude){
+    public AttractionPoints(int category, String name, String addressName, double longitude,
+                            double latitude, int locationResId, int ImageResId) {
         this.category = category;
         this.name = name;
         this.addressName = addressName;
         this.longitude = longitude;
         this.latitude = latitude;
+        this.locationResId = locationResId;
+        this.ImageResId = ImageResId;
     }
 
-    public Location getLocation() {
-        Location l = new Location(name);
-        l.setLatitude(latitude);
-        l.setLongitude(longitude);
-        return l;
+    public double getLongitude() {
+        return longitude;
     }
 
-    public int getCategory(){
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public int getCategory() {
         return category;
     }
 
+    public void setCategory(int cat) {
+        this.category = cat;
+    }
+
     public String getCategoryAsString(int category) {
-        if (category == RESTAURANT){
-            return "restaurant";
+        if (category == RESTAURANT) {
+            return "Restaurant";
         } else if (category == HOTEL) {
-            return "hotel";
+            return "Hotel";
         } else if (category == SHOPPING) {
-            return "shopping";
+            return "Shopping";
         } else {
-            return "sight-seeing";
+            return "Sight-seeing";
         }
     }
 
-    public String getName(){
+    public String getName() {
         return name;
     }
 
-    public String getAddressName(){
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getAddressName() {
         return addressName;
     }
 
@@ -65,12 +76,20 @@ public class AttractionPoints {
         latitude = lot.getLatitude();
     }
 
-    public void setName(String name){
-        this.name = name;
+    public int getLocationResId() {
+        return locationResId;
     }
 
-    public void setCategory(int cat) {
-        this.category = cat;
+    public int getImageResId() {
+        return ImageResId;
+    }
+
+    public boolean hasCoverPhoto() {
+        return ImageResId != 0;
+    }
+
+    public String toString() {
+        return "Name: " + name + "Address: " + addressName + "";
     }
 
 }

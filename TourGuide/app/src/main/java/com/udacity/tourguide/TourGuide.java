@@ -2,12 +2,9 @@ package com.udacity.tourguide;
 
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.view.View;
-import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -15,14 +12,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 
 public class TourGuide extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, AdapterView.OnItemClickListener {
+        implements AdapterView.OnItemClickListener, AttractionFragment.OnCategorySelectedListener {
+
+    ArrayList<AttractionPoints> points;
+    int currentPosition = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,16 +33,15 @@ public class TourGuide extends AppCompatActivity
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-
         // Create 4 category
-        ArrayList<AttractionPoints> points = new ArrayList<AttractionPoints>();
+        points = new ArrayList<>();
 
         points.add(createPoint(AttractionPoints.RESTAURANT));
         points.add(createPoint(AttractionPoints.HOTEL));
         points.add(createPoint(AttractionPoints.SHOPPING));
         points.add(createPoint(AttractionPoints.SIGHT_SEEING));
 
-        AttractionPointsAdapter pointsAdapter = new AttractionPointsAdapter(getApplication(),points);
+        CategoryAdapter pointsAdapter = new CategoryAdapter(getApplication(), points);
 
         ListView navigationView = (ListView) findViewById(R.id.nav_view);
         navigationView.setAdapter(pointsAdapter);
@@ -52,26 +51,26 @@ public class TourGuide extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-
-
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        //getSupportActionBar().setHomeButtonEnabled(true);
     }
 
-    private AttractionPoints createPoint(int category){
+    private AttractionPoints createPoint(int category) {
         Resources res = getResources();
         if (category == AttractionPoints.RESTAURANT) {
-        String str[] = res.getStringArray(R.array.restaurant);
-            return new AttractionPoints(category, str[1],str[2], Double.valueOf(str[3]),Double.valueOf(str[4]));
+            String str[] = res.getStringArray(R.array.restaurant);
+            return new AttractionPoints(category, str[1], str[2], Double.valueOf(str[3]), Double.valueOf(str[4]),
+                    R.drawable.ic_restaurant, 0);
         } else if (category == AttractionPoints.HOTEL) {
             String str[] = res.getStringArray(R.array.hotel);
-            return new AttractionPoints(category, str[1],str[2], Double.valueOf(str[3]),Double.valueOf(str[4]));
+            return new AttractionPoints(category, str[1], str[2], Double.valueOf(str[3]), Double.valueOf(str[4]),
+                    R.drawable.ic_hotel, 0);
         } else if (category == AttractionPoints.SHOPPING) {
             String str[] = res.getStringArray(R.array.shopping);
-            return new AttractionPoints(category, str[1],str[2], Double.valueOf(str[3]),Double.valueOf(str[4]));
+            return new AttractionPoints(category, str[1], str[2], Double.valueOf(str[3]), Double.valueOf(str[4]),
+                    R.drawable.ic_shopping, 0);
         } else {
             String str[] = res.getStringArray(R.array.sightseeing);
-            return new AttractionPoints(category, str[1],str[2], Double.valueOf(str[3]),Double.valueOf(str[4]));
+            return new AttractionPoints(category, str[1], str[2], Double.valueOf(str[3]), Double.valueOf(str[4]),
+                    R.drawable.ic_history, R.drawable.opera_house);
         }
     }
 
@@ -112,37 +111,27 @@ public class TourGuide extends AppCompatActivity
         return super.onContextItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
+    public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+        currentPosition = position;
+        Fragment f = new AttractionFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.single_screen, f);
+        transaction.commit();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-            Fragment f = new Restaurants();
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.single_screen, f).commit();
+        int tittle = points.get(position).getCategory();
 
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
-        }
-
+        setTitle(points.get(position).getCategoryAsString(tittle));
+        //Control open/close drawer
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        }
     }
 
     @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
+    public AttractionPoints onCategorySelected() {
+        return points.get(currentPosition);
     }
 }

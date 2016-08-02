@@ -2,20 +2,21 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="#44eebd82"
     android:orientation="horizontal"
     android:padding="8dp">
+
     <ImageView
         android:id="@+id/icon_cat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@mipmap/ic_launcher"
-        />
+        android:src="@mipmap/ic_launcher" />
+
     <TextView
         android:id="@+id/text_cat"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/TextCategory"
         android:layout_gravity="center"
         android:paddingLeft="16dp"
-        android:text="sample1"/>
+        android:text="sample1" />
 
 </LinearLayout>
