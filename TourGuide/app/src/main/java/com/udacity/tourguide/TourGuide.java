@@ -57,19 +57,19 @@ public class TourGuide extends AppCompatActivity
         Resources res = getResources();
         if (category == AttractionPoint.RESTAURANT) {
             String str[] = res.getStringArray(R.array.restaurant);
-            return new AttractionPoint(category, str[1], str[2], Double.valueOf(str[3]), Double.valueOf(str[4]),
+            return new AttractionPoint(getApplicationContext(), category, str[1], str[2], Double.valueOf(str[3]), Double.valueOf(str[4]),
                     R.drawable.ic_restaurant, 0);
         } else if (category == AttractionPoint.HOTEL) {
             String str[] = res.getStringArray(R.array.hotel);
-            return new AttractionPoint(category, str[1], str[2], Double.valueOf(str[3]), Double.valueOf(str[4]),
+            return new AttractionPoint(getApplicationContext(), category, str[1], str[2], Double.valueOf(str[3]), Double.valueOf(str[4]),
                     R.drawable.ic_hotel, 0);
         } else if (category == AttractionPoint.SHOPPING) {
             String str[] = res.getStringArray(R.array.shopping);
-            return new AttractionPoint(category, str[1], str[2], Double.valueOf(str[3]), Double.valueOf(str[4]),
+            return new AttractionPoint(getApplicationContext(), category, str[1], str[2], Double.valueOf(str[3]), Double.valueOf(str[4]),
                     R.drawable.ic_shopping, 0);
         } else {
             String str[] = res.getStringArray(R.array.sightseeing);
-            return new AttractionPoint(category, str[1], str[2], Double.valueOf(str[3]), Double.valueOf(str[4]),
+            return new AttractionPoint(getApplicationContext(), category, str[1], str[2], Double.valueOf(str[3]), Double.valueOf(str[4]),
                     R.drawable.ic_history, R.raw.opera_house);
         }
     }

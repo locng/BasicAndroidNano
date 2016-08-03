@@ -108,45 +108,44 @@ public class AttractionFragment extends Fragment {
         Resources res = getContext().getResources();
 
         if (category == AttractionPoint.RESTAURANT) {
-            points.add(new AttractionPoint(category, res.getString(R.string.name_res1),
+            points.add(new AttractionPoint(getContext(), category, res.getString(R.string.name_res1),
                     res.getString(R.string.addr_res1), Double.valueOf(R.string.default_long),
                     Double.valueOf(R.string.default_lat),
-                    R.drawable.ic_restaurant, R.raw.paradise_beach_club));
-            points.add(new AttractionPoint(category, res.getString(R.string.name_res2),
+                    R.drawable.ic_restaurant, R.drawable.paradise_beach_club));
+            points.add(new AttractionPoint(getContext(),category, res.getString(R.string.name_res2),
                     res.getString(R.string.addr_res2), Double.valueOf(R.string.default_long),
                     Double.valueOf(R.string.default_lat),
-                    R.drawable.ic_restaurant, R.raw.la_villa_french));
+                    R.drawable.ic_restaurant, R.drawable.la_villa_french));
 
         } else if (category == AttractionPoint.HOTEL) {
-            points.add(new AttractionPoint(category, res.getString(R.string.name_hotel1),
+            points.add(new AttractionPoint(getContext(),category, res.getString(R.string.name_hotel1),
                     res.getString(R.string.addr_hotel1), Double.valueOf(R.string.default_long),
                     Double.valueOf(R.string.default_lat),
-                    R.drawable.ic_hotel, 0));
-            points.add(new AttractionPoint(category, res.getString(R.string.name_hotel2),
+                    R.drawable.ic_hotel, R.drawable.park_hyatt));
+            points.add(new AttractionPoint(getContext(), category, res.getString(R.string.name_hotel2),
                     res.getString(R.string.addr_hotel2), Double.valueOf(R.string.default_long),
                     Double.valueOf(R.string.default_lat),
-                    R.drawable.ic_hotel, 0));
+                    R.drawable.ic_hotel, R.drawable.reverie));
 
         } else if (category == AttractionPoint.SHOPPING) {
-            points.add(new AttractionPoint(category, res.getString(R.string.name_shop1),
+            points.add(new AttractionPoint(getContext(), category, res.getString(R.string.name_shop1),
                     res.getString(R.string.addr_shop2), Double.valueOf(R.string.default_long),
                     Double.valueOf(R.string.default_lat),
-                    R.drawable.ic_shopping, 0));
-            points.add(new AttractionPoint(category, res.getString(R.string.name_shop2),
+                    R.drawable.ic_shopping, R.drawable.saigononbike));
+            points.add(new AttractionPoint(getContext(), category, res.getString(R.string.name_shop2),
                     res.getString(R.string.addr_shop2), Double.valueOf(R.string.default_long),
                     Double.valueOf(R.string.default_lat),
-                    R.drawable.ic_shopping, 0));
+                    R.drawable.ic_shopping, R.drawable.phancustom));
 
         } else {
-            points.add(new AttractionPoint(category, res.getString(R.string.name_sin1),
+            points.add(new AttractionPoint(getContext(), category, res.getString(R.string.name_sin1),
                     res.getString(R.string.addr_sin1), Double.valueOf(R.string.default_long),
                     Double.valueOf(R.string.default_lat),
-                    R.drawable.ic_history, R.raw.opera_house));
-            points.add(new AttractionPoint(category, res.getString(R.string.name_sin2),
+                    R.drawable.ic_history, R.drawable.opera_house));
+            points.add(new AttractionPoint(getContext(), category, res.getString(R.string.name_sin2),
                     res.getString(R.string.addr_sin2), Double.valueOf(R.string.default_long),
                     Double.valueOf(R.string.default_lat),
-                    R.drawable.ic_history, 0));
-
+                    R.drawable.ic_history, R.drawable.dame));
         }
         return points;
     }

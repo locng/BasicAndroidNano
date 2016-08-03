@@ -1,5 +1,7 @@
 package com.udacity.tourguide;
 
+import android.content.Context;
+import android.content.res.Resources;
 import android.location.Location;
 
 /**
@@ -19,9 +21,11 @@ public class AttractionPoint {
     double latitude;
     int ImageResId = 0;
     int locationResId;
+    Context ctx;
 
-    public AttractionPoint(int category, String name, String addressName, double longitude,
+    public AttractionPoint(Context context, int category, String name, String addressName, double longitude,
                            double latitude, int locationResId, int ImageResId) {
+        ctx = context;
         this.category = category;
         this.name = name;
         this.addressName = addressName;
@@ -48,14 +52,15 @@ public class AttractionPoint {
     }
 
     public String getCategoryAsString(int category) {
+        Resources res = ctx.getResources();
         if (category == RESTAURANT) {
-            return "Restaurant";
+            return res.getString(R.string.cat_restaurant);
         } else if (category == HOTEL) {
-            return "Hotel";
+            return res.getString(R.string.cat_hotel);
         } else if (category == SHOPPING) {
-            return "Shopping";
+            return res.getString(R.string.cat_shop);
         } else {
-            return "Sight-seeing";
+            return res.getString(R.string.cat_sin);
         }
     }
 
@@ -69,11 +74,6 @@ public class AttractionPoint {
 
     public String getAddressName() {
         return addressName;
-    }
-
-    public void setLocation(Location lot) {
-        longitude = lot.getLongitude();
-        latitude = lot.getLatitude();
     }
 
     public int getLocationResId() {
