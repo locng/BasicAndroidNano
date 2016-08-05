@@ -1,8 +1,13 @@
 package com.udaicty.booklisting;
 
+import android.app.SearchManager;
+import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -26,37 +31,58 @@ public class BookList extends AppCompatActivity {
         //getSupportActionBar().hide();
 
 
+
         List<Book> books = Utils.extractFeatureFromJson(Utils.sample);
         //Log.d(LOG,book.getTittle() + ", "+ book.getAuthor());
         BookQueryTask bookQueryTask = new BookQueryTask();
         bookQueryTask.execute();
 
     }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        setIntent(intent);
+        handleIntent(intent);
+    }
+
+    private void handleIntent(Intent intent) {
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            Log.d(LOG,"Search for " + query);
+        }
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.option_menu, menu);
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+
+        SearchManager searchManager = (SearchManager)getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView)
+                MenuItemCompat.getActionView(searchItem);
+
+        // Assumes current activity is the searchable activity
+        //if not, replace getComponentName with SearchActivity.class
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        //searchView.setIconifiedByDefault(false);// Do not iconify the widget, expand it by default
+        //searchView.setSubmitButtonEnabled(true);// Enable "submit button"
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                // Perform the final search
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                // Text has changed, apply filtering
+                return false;
+            }
+        });
 
         return true;
-    }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_settings:
-                // User chose the "Settings" item, show the app settings UI...
-                return true;
-
-            case R.id.action_favorite:
-                // User chose the "Favorite" action, mark the current item
-                // as a favorite...
-                return true;
-
-            default:
-                // If we got here, the user's action was not recognized.
-                // Invoke the superclass to handle it.
-                return super.onOptionsItemSelected(item);
-
-        }
     }
     private String SAMPLE_URL = "https://www.googleapis.com/books/v1/volumes?q=android&maxResults=40";
     private class BookQueryTask extends AsyncTask<URL, Void, List<Book>> {
