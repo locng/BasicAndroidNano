@@ -9,6 +9,7 @@ import android.util.Log;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 
 public class BookList extends AppCompatActivity {
     String LOG = BookList.class.getSimpleName();
@@ -18,18 +19,18 @@ public class BookList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_list);
 
-        Book book = Utils.extractFeatureFromJson(Utils.sample);
+        List<Book> books = Utils.extractFeatureFromJson(Utils.sample);
         //Log.d(LOG,book.getTittle() + ", "+ book.getAuthor());
         BookQueryTask bookQueryTask = new BookQueryTask();
         bookQueryTask.execute();
 
     }
 
-    private String SAMPLE_URL = "https://www.googleapis.com/books/v1/volumes?q=android&maxResults=1";
-    private class BookQueryTask extends AsyncTask<URL, Void, Book> {
+    private String SAMPLE_URL = "https://www.googleapis.com/books/v1/volumes?q=android&maxResults=40";
+    private class BookQueryTask extends AsyncTask<URL, Void, List<Book>> {
 
         @Override
-        protected Book doInBackground(URL... urls) {
+        protected List<Book> doInBackground(URL... urls) {
             URL url = createUrl(SAMPLE_URL);
             String jsonResponse="";
             try{
@@ -37,8 +38,8 @@ public class BookList extends AppCompatActivity {
             }catch(IOException e){
             }
 
-            Book book = Utils.extractFeatureFromJson(jsonResponse);
-            return book;
+            List<Book> books = Utils.extractFeatureFromJson(jsonResponse);
+            return books;
         }
         @Override
         protected void onProgressUpdate(Void... values) {
@@ -46,8 +47,11 @@ public class BookList extends AppCompatActivity {
         }
 
         @Override
-        protected void onPostExecute(Book book) {
-            Log.d(LOG,"onPostExecute"+ book.getTittle() + ", "+ book.getAuthor());
+        protected void onPostExecute(List<Book> books) {
+            for (int i=0;i<books.size();i++){
+                Book book = books.get(i);
+            Log.d(LOG,"onPostExecute: "+ i + book.getTittle() + ", "+ book.getAuthor());
+            }
         }
 
         /**

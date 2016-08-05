@@ -13,6 +13,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by win8 on 8/5/2016.
@@ -45,30 +47,43 @@ public class Utils {
      * Return an {@link Book} object by parsing out information
      * about the first earthquake from the input earthquakeJSON string.
      */
-    static Book extractFeatureFromJson(String baseJSON) {
+    static List<Book> extractFeatureFromJson(String baseJSON) {
+        List<Book> books = new ArrayList<>();
         try {
             JSONObject baseJsonResponse = new JSONObject(baseJSON);
             JSONArray itemArray = baseJsonResponse.getJSONArray("items");
 
-            // If there are results in the item array
-            if (itemArray.length() > 0) {
+            for (int i=0;i<itemArray.length();i++) {
                 // Extract out the first item
-                JSONObject firstItem = itemArray.getJSONObject(0);
+                JSONObject firstItem = itemArray.getJSONObject(i);
                 JSONObject volumeInfo = firstItem.getJSONObject("volumeInfo");
-
                 // Extract out the title, authors
                 String title = volumeInfo.getString("title");
                 JSONArray authors = volumeInfo.getJSONArray("authors");
                 // Just get one author for testing
                 String firstAuthor = authors.getString(0);
-
-                // Create a new {@link Event} object
-                return new Book(title, firstAuthor);
+                Book book = new Book(title,firstAuthor);
+                books.add(book);
             }
+            // If there are results in the item array
+//            if (itemArray.length() > 0) {
+//                // Extract out the first item
+//                JSONObject firstItem = itemArray.getJSONObject(0);
+//                JSONObject volumeInfo = firstItem.getJSONObject("volumeInfo");
+//
+//                // Extract out the title, authors
+//                String title = volumeInfo.getString("title");
+//                JSONArray authors = volumeInfo.getJSONArray("authors");
+//                // Just get one author for testing
+//                String firstAuthor = authors.getString(0);
+//
+//                // Create a new {@link Event} object
+//                //return new Book(title, firstAuthor);
+//            }
         } catch (JSONException e) {
             Log.e(LOG_TAG, "Problem parsing the earthquake JSON results", e);
         }
-        return null;
+        return books;
     }
 
     /**
