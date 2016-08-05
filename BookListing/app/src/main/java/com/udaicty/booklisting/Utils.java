@@ -47,7 +47,7 @@ public class Utils {
      * Return an {@link Book} object by parsing out information
      * about the first earthquake from the input earthquakeJSON string.
      */
-    static List<Book> extractFeatureFromJson(String baseJSON) {
+    public static List<Book> extractFeatureFromJson(String baseJSON) {
         List<Book> books = new ArrayList<>();
         try {
             JSONObject baseJsonResponse = new JSONObject(baseJSON);
@@ -59,27 +59,16 @@ public class Utils {
                 JSONObject volumeInfo = firstItem.getJSONObject("volumeInfo");
                 // Extract out the title, authors
                 String title = volumeInfo.getString("title");
-                JSONArray authors = volumeInfo.getJSONArray("authors");
+                JSONArray authorsArray = volumeInfo.getJSONArray("authors");
+//                for (int j=0;j<authorsArray.length();j++){
+//                    ArrayList<String> authors = new ArrayList<>();
+//                    authors.add(authorsArray.getString(j));
+//                }
                 // Just get one author for testing
-                String firstAuthor = authors.getString(0);
+                String firstAuthor = authorsArray.getString(0);
                 Book book = new Book(title,firstAuthor);
                 books.add(book);
             }
-            // If there are results in the item array
-//            if (itemArray.length() > 0) {
-//                // Extract out the first item
-//                JSONObject firstItem = itemArray.getJSONObject(0);
-//                JSONObject volumeInfo = firstItem.getJSONObject("volumeInfo");
-//
-//                // Extract out the title, authors
-//                String title = volumeInfo.getString("title");
-//                JSONArray authors = volumeInfo.getJSONArray("authors");
-//                // Just get one author for testing
-//                String firstAuthor = authors.getString(0);
-//
-//                // Create a new {@link Event} object
-//                //return new Book(title, firstAuthor);
-//            }
         } catch (JSONException e) {
             Log.e(LOG_TAG, "Problem parsing the earthquake JSON results", e);
         }
@@ -89,7 +78,7 @@ public class Utils {
     /**
      * Make an HTTP request to the given URL and return a String as the response.
      */
-    static String makeHttpRequest(URL url) throws IOException {
+    public static String makeHttpRequest(URL url) throws IOException {
         String jsonResponse = "";
         HttpURLConnection urlConnection = null;
         InputStream inputStream = null;
