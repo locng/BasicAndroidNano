@@ -1,10 +1,13 @@
 package com.udaicty.booklisting;
 
 import android.os.AsyncTask;
-import android.support.v4.view.AsyncLayoutInflater;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -18,6 +21,10 @@ public class BookList extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_list);
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(myToolbar);
+        //getSupportActionBar().hide();
+
 
         List<Book> books = Utils.extractFeatureFromJson(Utils.sample);
         //Log.d(LOG,book.getTittle() + ", "+ book.getAuthor());
@@ -25,7 +32,32 @@ public class BookList extends AppCompatActivity {
         bookQueryTask.execute();
 
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.option_menu, menu);
 
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                // User chose the "Settings" item, show the app settings UI...
+                return true;
+
+            case R.id.action_favorite:
+                // User chose the "Favorite" action, mark the current item
+                // as a favorite...
+                return true;
+
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+
+        }
+    }
     private String SAMPLE_URL = "https://www.googleapis.com/books/v1/volumes?q=android&maxResults=40";
     private class BookQueryTask extends AsyncTask<URL, Void, List<Book>> {
 
