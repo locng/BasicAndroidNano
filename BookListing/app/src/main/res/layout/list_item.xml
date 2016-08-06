@@ -34,11 +34,11 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:fontFamily="sans-serif-light"
-            android:maxLines="2"
+            android:maxLines="3"
             android:textAllCaps="true"
             android:textColor="@color/textColor"
             android:textSize="16sp"
-            tools:text="30km S of" />
+            tools:text="place holder" />
 
         <TextView
             android:id="@+id/authors"

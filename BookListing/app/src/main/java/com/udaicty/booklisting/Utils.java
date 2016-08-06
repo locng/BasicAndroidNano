@@ -22,9 +22,6 @@ import java.util.List;
 public class Utils {
     private static final String LOG_TAG = Utils.class.getSimpleName();
 
-    static String sample = "{\"totalItems\":537,\"items\":[{\"volumeInfo\": {\"title\":\"Beginning Android 4\",\"authors\":[\"Grant Allen\"]}}]}";
-
-
     /**
      * Convert the {@link InputStream} into a String which contains the
      * whole JSON response from the server.
@@ -66,6 +63,7 @@ public class Utils {
 //                }
                 // Just get one author for testing
                 String firstAuthor = authorsArray.getString(0);
+                Log.d("extract/","pos" + i + ", " + title + ", " + firstAuthor);
                 Book book = new Book(title,firstAuthor);
                 books.add(book);
             }

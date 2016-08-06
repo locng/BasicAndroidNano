@@ -52,9 +52,5 @@ class BookQueryTask extends AsyncTask<URL, Void, List<Book>> {
     @Override
     protected void onPostExecute(List<Book> books) {
         listener.onDataReady(books);
-        //for (int i=0;i<books.size();i++){
-         //   Book book = books.get(i);
-            //Log.d(LOG,"onPostExecute: "+ i + book.getTittle() + ", "+ book.getAuthor());
-        //}
     }
 }
