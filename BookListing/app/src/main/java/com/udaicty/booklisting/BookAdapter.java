@@ -26,6 +26,7 @@ public class BookAdapter extends ArrayAdapter<Book> {
         View list = convertView;
         if (list == null) {
             list = LayoutInflater.from(getContext()).inflate(R.layout.list_item, parent, false);
+        }
             Book book = getItem(position);
             Log.d("getView", "pos:" + position + ", " + book.getTittle() + ", " + book.getAuthor());
 
@@ -37,7 +38,7 @@ public class BookAdapter extends ArrayAdapter<Book> {
 
             TextView author = (TextView)list.findViewById(R.id.authors);
             author.setText(book.getAuthor());
-        }
+
         return list;
     }
 }
