@@ -1,5 +1,7 @@
 package com.udaicty.booklisting;
 
+import android.content.Context;
+import android.os.AsyncTask;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,18 +12,21 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
-public class BookList extends AppCompatActivity implements BookQueryTask.OnDataReadyListener{
+public class BookList extends AppCompatActivity {
     String LOG = BookList.class.getSimpleName();
     private String QUERY_URL_1 = "https://www.googleapis.com/books/v1/volumes?q=";
-    private String QUERY_URL_2 = "&maxResults=5";
+    private String QUERY_URL_2 = "&maxResults=20";
     BookQueryTask bookQueryTask;
     ListView bookListView;
+    BookAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,9 +36,8 @@ public class BookList extends AppCompatActivity implements BookQueryTask.OnDataR
         setSupportActionBar(myToolbar);
 
         bookListView = (ListView)findViewById(R.id.list);
+        adapter = new BookAdapter(this, R.layout.list_item);
 
-        bookQueryTask = new BookQueryTask();
-        bookQueryTask.registerListener(this);
     }
 
     @Override
@@ -44,6 +48,7 @@ public class BookList extends AppCompatActivity implements BookQueryTask.OnDataR
         final MenuItem searchItem = menu.findItem(R.id.action_search);
         final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
         searchView.setQueryHint(getApplicationContext().getResources().getString(R.string.search_hint));
+        searchView.setIconifiedByDefault(false);
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
@@ -58,6 +63,7 @@ public class BookList extends AppCompatActivity implements BookQueryTask.OnDataR
                 searchView.setIconified(true);
                 searchItem.collapseActionView();
                 //prevent request twice due to KEY_UP/KEY_DOWN
+                bookQueryTask = new BookQueryTask();
                 bookQueryTask.execute(url);
                 return false;
             }
@@ -105,14 +111,40 @@ public class BookList extends AppCompatActivity implements BookQueryTask.OnDataR
         }
     }
 
-    @Override
-    public void onDataReady(List<Book> books) {
-        //ArrayList<Book> books = (ArrayList<Book>) objects;
-          for (int i=0;i<books.size();i++){
-         Book book = books.get(i);
-        Log.d(LOG,"onDataReady: "+ i + book.getTittle() + ", "+ book.getAuthor());
+    class BookQueryTask extends AsyncTask<URL, Void, List<Book>> {
+        private String LOG = BookQueryTask.class.getSimpleName();
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
         }
-        BookAdapter bookAdapter = new BookAdapter(this, books);
-        bookListView.setAdapter(bookAdapter);
+
+        @Override
+        protected List<Book> doInBackground(URL... urls) {
+            URL url = urls[0];//createUrl(queryUrl);
+            String jsonResponse="";
+            try{
+                jsonResponse = Utils.makeHttpRequest(url);
+            }catch(IOException e){
+            }
+
+            List<Book> books = Utils.extractFeatureFromJson(jsonResponse);
+            return books;
+        }
+        @Override
+        protected void onProgressUpdate(Void... values) {
+            super.onProgressUpdate(values);
+        }
+
+        @Override
+        protected void onPostExecute(List<Book> books) {
+            for (int i=0;i<books.size();i++){
+                Book book = books.get(i);
+                Log.d("onPostExecute", "pos:" + i + ", " + book.getTittle() + ", " + book.getAuthor());
+            }
+            adapter.clear();
+            adapter.addAll(books);
+            bookListView.setAdapter(adapter);
+        }
     }
 }
