@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">BookListing</string>
     <string name="search_title">Search</string>
+    <string name="search_hint">Search books</string>
+    <string name="no_data">No data. Enter keyword to search</string>
+    <string name="loading">"Loading data ..."</string>
 </resources>
