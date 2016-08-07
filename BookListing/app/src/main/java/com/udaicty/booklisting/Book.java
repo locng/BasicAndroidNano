@@ -1,7 +1,5 @@
 package com.udaicty.booklisting;
 
-import android.graphics.Bitmap;
-
 import java.util.List;
 
 /**
@@ -10,17 +8,14 @@ import java.util.List;
 public class Book {
 
     String tittle;
-    String author;
-    Bitmap cover;
-    String description;
-    public Book(String tittle, String author, Bitmap cover, String description) {
+    List<String> author;
+
+    public Book(String tittle, List<String> author) {
         this.tittle = tittle;
         this.author = author;
-        this.cover = cover;
-        this.description = description;
     }
 
-    public String getAuthor() {
+    public List<String> getAuthor() {
         return author;
     }
 
@@ -28,9 +23,4 @@ public class Book {
         return tittle;
     }
 
-    public Book(String tittle, String author) {
-
-        this.tittle = tittle;
-        this.author = author;
-    }
 }

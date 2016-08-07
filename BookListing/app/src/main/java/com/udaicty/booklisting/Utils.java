@@ -48,23 +48,24 @@ public class Utils {
         List<Book> books = new ArrayList<>();
         try {
             JSONObject baseJsonResponse = new JSONObject(baseJSON);
+            int itemCount = baseJsonResponse.getInt("totalItems");
+            if (itemCount == 0) {
+                return null;
+            }
             JSONArray itemArray = baseJsonResponse.getJSONArray("items");
 
-            for (int i=0;i<itemArray.length();i++) {
+            for (int i = 0; i < itemArray.length(); i++) {
                 // Extract out the first item
                 JSONObject firstItem = itemArray.getJSONObject(i);
                 JSONObject volumeInfo = firstItem.getJSONObject("volumeInfo");
                 // Extract out the title, authors
                 String title = volumeInfo.getString("title");
                 JSONArray authorsArray = volumeInfo.getJSONArray("authors");
-//                for (int j=0;j<authorsArray.length();j++){
-//                    ArrayList<String> authors = new ArrayList<>();
-//                    authors.add(authorsArray.getString(j));
-//                }
-                // Just get one author for testing
-                String firstAuthor = authorsArray.getString(0);
-                Log.d("extract/","pos" + i + ", " + title + ", " + firstAuthor);
-                Book book = new Book(title,firstAuthor);
+                ArrayList<String> authors = new ArrayList<>();
+                for (int j = 0; j < authorsArray.length(); j++) {
+                    authors.add(authorsArray.getString(j));
+                }
+                Book book = new Book(title, authors);
                 books.add(book);
             }
         } catch (JSONException e) {
@@ -92,14 +93,11 @@ public class Utils {
             } else {
                 jsonResponse = "";
             }
-        } catch (IOException e) {
-            // TODO: Handle the exception
         } finally {
             if (urlConnection != null) {
                 urlConnection.disconnect();
             }
             if (inputStream != null) {
-                // function must handle java.io.IOException here
                 inputStream.close();
             }
         }
