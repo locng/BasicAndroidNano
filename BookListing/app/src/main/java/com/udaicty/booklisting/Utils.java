@@ -60,16 +60,20 @@ public class Utils {
                 JSONObject volumeInfo = firstItem.getJSONObject("volumeInfo");
                 // Extract out the title, authors
                 String title = volumeInfo.getString("title");
-                JSONArray authorsArray = volumeInfo.getJSONArray("authors");
                 ArrayList<String> authors = new ArrayList<>();
-                for (int j = 0; j < authorsArray.length(); j++) {
-                    authors.add(authorsArray.getString(j));
+                if (volumeInfo.has("authors")) {
+                    JSONArray authorsArray = volumeInfo.getJSONArray("authors");
+                    if (authorsArray.length() > 0) { // Make sure author JSON have value
+                        for (int j = 0; j < authorsArray.length(); j++) {
+                            authors.add(authorsArray.getString(j));
+                        }
+                    }
                 }
                 Book book = new Book(title, authors);
                 books.add(book);
             }
         } catch (JSONException e) {
-            Log.e(LOG_TAG, "Problem parsing the earthquake JSON results", e);
+            Log.e(LOG_TAG, "Problem parsing the JSON results", e);
         }
         return books;
     }

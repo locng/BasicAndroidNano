@@ -42,14 +42,18 @@ public class BookAdapter extends ArrayAdapter<Book> {
         vh.count.setText(Integer.toString(position));
         vh.title.setText(book.getTittle());
 
-        String authors = "";
+        String authors = getContext().getResources().getString(R.string.no_author);
         StringBuilder build = new StringBuilder();
-        for (int i = 0; i < book.getAuthor().size(); i++) {
-            build.append(book.getAuthor().get(i)).append(", ");
+        int authorCount = book.getAuthor().size();
+        if (authorCount > 0) {
+            for (int i = 0; i < book.getAuthor().size(); i++) {
+                build.append(book.getAuthor().get(i)).append(", ");
+            }
+            //Delete the last ","
+            build.deleteCharAt(build.length() - 2);
+            authors = build.toString();
         }
-        //Delete the last ","
-        build.deleteCharAt(build.length() - 2);
-        authors = build.toString();
+
         vh.authors.setText(authors);
 
         return list;

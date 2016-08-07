@@ -1,5 +1,8 @@
 package com.udaicty.booklisting;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
@@ -14,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -64,7 +68,6 @@ public class BookList extends AppCompatActivity {
         adapter = new BookAdapter(this);
 
         bookListView.setAdapter(adapter);
-
     }
 
     @Override
@@ -89,7 +92,11 @@ public class BookList extends AppCompatActivity {
                 searchView.setIconified(true);
                 searchItem.collapseActionView();
                 //prevent request twice due to KEY_UP/KEY_DOWN
-                new BookQueryTask().execute(url);
+                if (isNetworkConnected()) {
+                    new BookQueryTask().execute(url);
+                } else {
+                    Toast.makeText(getApplicationContext(), R.string.no_internet, Toast.LENGTH_SHORT).show();
+                }
                 return false;
             }
 
@@ -100,6 +107,16 @@ public class BookList extends AppCompatActivity {
         });
 
         return true;
+    }
+
+    private boolean isNetworkConnected() {
+        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnectedOrConnecting()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
