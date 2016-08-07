@@ -1,10 +1,9 @@
 package com.udaicty.booklisting;
 
-import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -12,21 +11,45 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
+import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 public class BookList extends AppCompatActivity {
-    String LOG = BookList.class.getSimpleName();
+    private final String LOG = BookList.class.getSimpleName();
     private String QUERY_URL_1 = "https://www.googleapis.com/books/v1/volumes?q=";
-    private String QUERY_URL_2 = "&maxResults=20";
-    BookQueryTask bookQueryTask;
+    private String QUERY_URL_2 = "&maxResults=40";
     ListView bookListView;
     BookAdapter adapter;
+    TextView tx;
+    int tx_state;
+    List<Book> savedBooks;
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        if (savedBooks != null) {
+            outState.putParcelableArrayList("bookList", (ArrayList) savedBooks);
+        }
+        outState.putInt("TEXT_STATE", tx_state);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        if (savedInstanceState != null && savedInstanceState.containsKey("bookList")) {
+            savedBooks = (List) savedInstanceState.getParcelableArrayList("bookList");
+            tx_state = savedInstanceState.getInt("TEXT_STATE");
+            tx.setVisibility(tx_state);
+            adapter.addAll(savedBooks);
+        }
+        super.onRestoreInstanceState(savedInstanceState);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,8 +58,12 @@ public class BookList extends AppCompatActivity {
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
 
-        bookListView = (ListView)findViewById(R.id.list);
-        adapter = new BookAdapter(this, R.layout.list_item);
+        tx = (TextView) findViewById(R.id.placeholder);
+
+        bookListView = (ListView) findViewById(R.id.list);
+        adapter = new BookAdapter(this);
+
+        bookListView.setAdapter(adapter);
 
     }
 
@@ -54,7 +81,6 @@ public class BookList extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextSubmit(String query) {
-                Log.d(LOG,"===="  + query);
                 final String searchString = createQuery(query);
                 URL url = createUrl(searchString);
                 //prevent request twice due to KEY_UP/KEY_DOWN
@@ -63,10 +89,10 @@ public class BookList extends AppCompatActivity {
                 searchView.setIconified(true);
                 searchItem.collapseActionView();
                 //prevent request twice due to KEY_UP/KEY_DOWN
-                bookQueryTask = new BookQueryTask();
-                bookQueryTask.execute(url);
+                new BookQueryTask().execute(url);
                 return false;
             }
+
             @Override
             public boolean onQueryTextChange(String newText) {
                 return false;
@@ -75,6 +101,7 @@ public class BookList extends AppCompatActivity {
 
         return true;
     }
+
     /**
      * Returns new URL object from the given string URL.
      */
@@ -88,27 +115,23 @@ public class BookList extends AppCompatActivity {
         }
         return url;
     }
-    private String createQuery(String keyword){
+
+    private String createQuery(String keyword) {
         String ret = "";
-        if(!TextUtils.isEmpty(keyword)){
-        StringBuilder builder = new StringBuilder(QUERY_URL_1);
-        builder.append(keyword).append(QUERY_URL_2);
-        ret = builder.toString();
+        if (!TextUtils.isEmpty(keyword)) {
+            StringBuilder builder = new StringBuilder(QUERY_URL_1);
+            builder.append(keyword).append(QUERY_URL_2);
+            ret = builder.toString();
         }
-        Log.d(LOG,"createQuery() " + ret);
         return ret;
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_search:
-                return true;
-            default:
-                // If we got here, the user's action was not recognized.
-                // Invoke the superclass to handle it.
-                return super.onOptionsItemSelected(item);
-
+        if (item.getItemId() == R.id.action_search) {
+            return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 
     class BookQueryTask extends AsyncTask<URL, Void, List<Book>> {
@@ -116,21 +139,27 @@ public class BookList extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
+            tx_state = View.VISIBLE;
+            tx.setVisibility(tx_state);
+            tx.setText(R.string.loading);
             super.onPreExecute();
         }
 
         @Override
         protected List<Book> doInBackground(URL... urls) {
-            URL url = urls[0];//createUrl(queryUrl);
-            String jsonResponse="";
-            try{
+            URL url = urls[0];
+            String jsonResponse = "";
+            try {
                 jsonResponse = Utils.makeHttpRequest(url);
-            }catch(IOException e){
+            } catch (IOException e) {
+                Log.e(LOG, "Failed to request data", e);
+                return null;
             }
 
             List<Book> books = Utils.extractFeatureFromJson(jsonResponse);
             return books;
         }
+
         @Override
         protected void onProgressUpdate(Void... values) {
             super.onProgressUpdate(values);
@@ -138,13 +167,19 @@ public class BookList extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(List<Book> books) {
-            for (int i=0;i<books.size();i++){
-                Book book = books.get(i);
-                Log.d("onPostExecute", "pos:" + i + ", " + book.getTittle() + ", " + book.getAuthor());
+            if (books != null) {
+                savedBooks = books;
+                tx_state = View.GONE;
+                tx.setVisibility(tx_state);
+
+                adapter.clear();
+                adapter.addAll(savedBooks);
+            } else {
+                tx_state = View.VISIBLE;
+                adapter.clear();
+                tx.setVisibility(tx_state);
+                tx.setText(R.string.no_data);
             }
-            adapter.clear();
-            adapter.addAll(books);
-            bookListView.setAdapter(adapter);
         }
     }
 }
