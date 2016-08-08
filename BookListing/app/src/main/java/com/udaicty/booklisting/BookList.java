@@ -1,6 +1,8 @@
 package com.udaicty.booklisting;
 
+import android.app.LoaderManager;
 import android.content.Context;
+import android.content.Loader;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -25,7 +27,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BookList extends AppCompatActivity {
+public class BookList extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Book>>{
     private final String LOG = BookList.class.getSimpleName();
     private String QUERY_URL_1 = "https://www.googleapis.com/books/v1/volumes?q=";
     private String QUERY_URL_2 = "&maxResults=40";
@@ -34,6 +36,7 @@ public class BookList extends AppCompatActivity {
     TextView tx;
     int tx_state;
     List<Book> savedBooks;
+    private String searchString;
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -64,6 +67,10 @@ public class BookList extends AppCompatActivity {
 
         tx = (TextView) findViewById(R.id.placeholder);
 
+        //Gte reference to the loaderManager in order to interact with loaders
+        LoaderManager loaderManager = getLoaderManager();
+        loaderManager.initLoader(0, null, this);
+
         bookListView = (ListView) findViewById(R.id.list);
         adapter = new BookAdapter(this);
 
@@ -84,7 +91,8 @@ public class BookList extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextSubmit(String query) {
-                final String searchString = createQuery(query);
+                searchString = createQuery(query);
+
                 URL url = createUrl(searchString);
                 //prevent request twice due to KEY_UP/KEY_DOWN
                 searchView.clearFocus();
@@ -93,7 +101,8 @@ public class BookList extends AppCompatActivity {
                 searchItem.collapseActionView();
                 //prevent request twice due to KEY_UP/KEY_DOWN
                 if (isNetworkConnected()) {
-                    new BookQueryTask().execute(url);
+                    //new BookQueryTask().execute(url);
+                    getLoaderManager().restartLoader(0,null,BookList.this);
                 } else {
                     Toast.makeText(getApplicationContext(), R.string.no_internet, Toast.LENGTH_SHORT).show();
                 }
@@ -149,6 +158,33 @@ public class BookList extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public Loader<List<Book>> onCreateLoader(int i, Bundle bundle) {
+        return new BookLoader(this, searchString);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<List<Book>> loader, List<Book> books) {
+        if (books != null) {
+            savedBooks = books;
+            tx_state = View.GONE;
+            tx.setVisibility(tx_state);
+
+            adapter.clear();
+            adapter.addAll(savedBooks);
+        } else {
+            tx_state = View.VISIBLE;
+            adapter.clear();
+            tx.setVisibility(tx_state);
+            tx.setText(R.string.no_data);
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<List<Book>> loader) {
+        adapter.clear();
     }
 
     class BookQueryTask extends AsyncTask<URL, Void, List<Book>> {
