@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     NewsAdapter adapter;
     private TextView emptyText;
     private String URL_GUARDIAN_START = "http://content.guardianapis.com/search?q=";
-    private String URL_GUARDIAN_END = "&api-key=test&show-fields=trailText,thumbnail";
+    private String URL_GUARDIAN_END = "&api-key=test&show-fields=trailText,thumbnail&show-tags=contributor";
     private String searchString;
     View loadingIndicator;
 
