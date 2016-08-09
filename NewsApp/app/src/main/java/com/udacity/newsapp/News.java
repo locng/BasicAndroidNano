@@ -9,12 +9,14 @@ public class News {
     private String sectionName;
     private String webUrl;
     private String publicationDate;
+    private String contributors;
 
-    public News(String title, String sectionName, String webUrl, String publicationDate) {
+    public News(String title, String sectionName, String webUrl, String publicationDate, String contributors) {
         this.title = title;
         this.sectionName = sectionName;
         this.webUrl = webUrl;
         this.publicationDate = publicationDate;
+        this.contributors = contributors;
     }
 
     public void setTitle(String title) {
@@ -48,6 +50,14 @@ public class News {
 
     public String getPublicationDate() {
         return publicationDate;
+    }
+
+    public String getContributors() {
+        return contributors;
+    }
+
+    public void setContributors(String contributors) {
+        this.contributors = contributors;
     }
 
 }

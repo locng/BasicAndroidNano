@@ -1,6 +1,7 @@
 package com.udacity.newsapp;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.StringBuilderPrinter;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,8 @@ import android.widget.TextView;
 
 import com.udacity.newsapp.News;
 import com.udacity.newsapp.R;
+
+import org.w3c.dom.Text;
 
 /**
  * Created by win8 on 8/6/2016.
@@ -23,6 +26,7 @@ public class NewsAdapter extends ArrayAdapter<News> {
     static class ViewHolder {
         TextView count;
         TextView title;
+        TextView contributors;
         TextView section;
     }
 
@@ -37,6 +41,7 @@ public class NewsAdapter extends ArrayAdapter<News> {
             vh = new ViewHolder();
             vh.count = (TextView) list.findViewById(R.id.count);
             vh.title = (TextView) list.findViewById(R.id.title);
+            vh.contributors = (TextView)list.findViewById(R.id.contributor);
             vh.section = (TextView) list.findViewById(R.id.section);
             list.setTag(vh);
         } else {
@@ -45,6 +50,12 @@ public class NewsAdapter extends ArrayAdapter<News> {
 
         vh.count.setText(Integer.toString(position));
         vh.title.setText(news.getTitle());
+        if (!TextUtils.isEmpty(news.getContributors())) {
+            vh.contributors.setText(news.getContributors());
+        } else {
+            //Hide it if contributor is not available
+            vh.contributors.setVisibility(View.GONE);
+        }
 
         String section = news.getSectionName();
         String date = news.getPublicationDate();

@@ -26,6 +26,7 @@ public class Utils {
     private static String SECTION_NAME = "sectionName";
     private static String PUBLICATION_DATE = "webPublicationDate";
     private static String WEB_URL = "webUrl";
+    private static String WEB_TAG = "tags";
 
     /**
      * Convert the {@link InputStream} into a String which contains the
@@ -58,19 +59,26 @@ public class Utils {
 
             JSONArray resultArray = response.getJSONArray("results");
 
-            if (resultArray.length() > 0){
+            if (resultArray.length() > 0) {
 
-            for (int i = 0; i < resultArray.length(); i++) {
+                for (int i = 0; i < resultArray.length(); i++) {
 
-                JSONObject result = resultArray.getJSONObject(i);
-                String sectionName = result.getString(SECTION_NAME);
-                String webTitle = result.getString(WEB_TITLE);
-                String publicationDate = result.getString(PUBLICATION_DATE);
-                String webUrl = result.getString(WEB_URL);
-
-                news = new News(webTitle,sectionName,webUrl,publicationDate);
-                NewsCollection.add(news);
-            }
+                    JSONObject result = resultArray.getJSONObject(i);
+                    String sectionName = result.getString(SECTION_NAME);
+                    String webTitle = result.getString(WEB_TITLE);
+                    String publicationDate = result.getString(PUBLICATION_DATE);
+                    String webUrl = result.getString(WEB_URL);
+                    String contributor = "";
+                    JSONArray tagsArray = result.getJSONArray(WEB_TAG);
+                    if (tagsArray.length() > 0) {
+                        JSONObject typeObject = tagsArray.getJSONObject(0);
+                        if (typeObject.has("type")) {
+                            contributor = typeObject.getString(WEB_TITLE);
+                        }
+                    }
+                    news = new News(webTitle, sectionName, webUrl, publicationDate, contributor);
+                    NewsCollection.add(news);
+                }
             }
         } catch (JSONException e) {
             Log.e(LOG_TAG, "Problem parsing the JSON results", e);
