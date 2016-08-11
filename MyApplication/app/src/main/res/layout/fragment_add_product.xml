@@ -1,0 +1,70 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="16dp"
+    android:layout_marginLeft="16dp"
+    android:layout_marginBottom="16dp"
+    android:orientation="vertical"
+    tools:context="com.udacity.inventoryapp.AddProductFragment">
+
+<TableLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:stretchColumns="1"
+    android:layout_marginBottom="16dp"
+    >
+    <TableRow>
+        <EditText
+            android:id="@+id/name"
+            android:hint="@string/product_name"
+            android:layout_span="2"
+            />
+    </TableRow>
+    <TableRow>
+        <EditText
+            android:id="@+id/price"
+            android:hint="@string/product_price"
+            android:inputType="numberDecimal"
+            android:layout_span="2"/>
+    </TableRow>
+    <TableRow>
+        <EditText
+            android:id="@+id/quantity"
+            android:hint="@string/product_quantity"
+            android:inputType="number"
+            android:layout_span="2"/>
+    </TableRow>
+    <TableRow>
+        <EditText
+            android:id="@+id/supplier"
+            android:hint="@string/product_supplier"
+            android:inputType="textEmailAddress"
+            android:layout_span="2"/>
+    </TableRow>
+</TableLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/productImage"
+            android:layout_width="200dp"
+            android:layout_height="150dp"
+            android:background="@android:color/darker_gray"/>
+        <Button
+            android:id="@+id/bt_addImage"
+            android:layout_marginLeft="8dp"
+            android:layout_height="wrap_content"
+            android:text="@string/product_image"
+            android:layout_width="wrap_content"
+            android:textSize="10dp"/>
+    </LinearLayout>
+
+      <Button android:id="@+id/bt_add"
+          android:layout_marginTop="16dp"
+          android:layout_gravity="center"
+          android:layout_height="wrap_content"
+          android:layout_width="wrap_content"
+          android:text="@string/add_product"/>
+</LinearLayout>
