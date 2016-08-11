@@ -26,9 +26,6 @@ import java.io.IOException;
 
 /**
  * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link AddProductFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
  * Use the {@link AddProductFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
@@ -39,8 +36,8 @@ public class AddProductFragment extends Fragment {
     String productImageLocation;
     ProductDBHelper mDbHelper;
     ImageView productImage;
+    Uri uri = null;
 
-    private OnFragmentInteractionListener mListener;
 
     public AddProductFragment() {
         // Required empty public constructor
@@ -126,13 +123,11 @@ public class AddProductFragment extends Fragment {
     }
 
     private boolean invalidateAllField(String name, String price, String quantity, String supplier) {
-        Log.d("", name + "," + price + "," + quantity + "," + supplier);
         if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(price) && !TextUtils.isEmpty(quantity) && !TextUtils.isEmpty(supplier)) {
             return true;
         }
         return false;
     }
-
 
     /**
      * Fires an intent to spin up the "file chooser" UI and select an image.
@@ -148,17 +143,11 @@ public class AddProductFragment extends Fragment {
         // of contacts or timezones)
         intent.addCategory(Intent.CATEGORY_OPENABLE);
 
-        // Filter to show only images, using the image MIME data type.
-        // If one wanted to search for ogg vorbis files, the type would be "audio/ogg".
-        // To search for all documents available via installed storage providers, it would be
-        // "*/*".
         intent.setType("image/*");
 
         startActivityForResult(intent, READ_REQUEST_CODE);
         // END_INCLUDE (use_open_document_intent)
     }
-
-    Uri uri = null;
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
@@ -175,7 +164,6 @@ public class AddProductFragment extends Fragment {
             if (resultData != null) {
                 uri = resultData.getData();
                 productImageLocation = uri.toString();
-                Log.d("", "Image location :" + productImageLocation);
                 //Return bitmap for product image
                 displayImage(uri);
             }
@@ -229,13 +217,6 @@ public class AddProductFragment extends Fragment {
         }
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -250,21 +231,6 @@ public class AddProductFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        listener = null;
     }
 }

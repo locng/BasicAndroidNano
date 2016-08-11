@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -30,7 +31,7 @@ public class ProductAdapter extends ArrayAdapter<Product> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View v = convertView;
-        Product product = getItem(position);
+        final Product product = getItem(position);
         if (v == null){
             v = LayoutInflater.from(getContext()).inflate(R.layout.list_item,parent, false);
         }
@@ -39,6 +40,25 @@ public class ProductAdapter extends ArrayAdapter<Product> {
         TextView price = (TextView)v.findViewById(R.id.productPrice);
         TextView quantity = (TextView)v.findViewById(R.id.productQuantity);
         TextView remaining = (TextView)v.findViewById(R.id.productRemaining);
+        Button order = (Button)v.findViewById(R.id.bt_order);
+        order.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ProductDBHelper mDbHelper = new ProductDBHelper(getContext());
+                mDbHelper.open();
+                int remained = Integer.valueOf(product.getProductRemaining());
+                Log.d("", "remained: " + remained);
+                remained = --remained;
+                if (remained >= 0) {
+                    product.setProductRemaining(remained);
+                    mDbHelper.updateProductEntry(product);
+                    mDbHelper.close();
+                    notifyDataSetChanged();
+                } else {
+                    return;
+                }
+            }
+        });
 
         name.setText(product.getProductName());
         price.setText(Double.toString(product.getProductPrice()));
@@ -51,7 +71,8 @@ public class ProductAdapter extends ArrayAdapter<Product> {
         }
         return v;
     }
-   class ImageDisplay extends AsyncTask<String, Void, Bitmap> {
+
+    class ImageDisplay extends AsyncTask<String, Void, Bitmap> {
        @Override
        protected Bitmap doInBackground(String... uris) {
            Bitmap bitmap = null;
