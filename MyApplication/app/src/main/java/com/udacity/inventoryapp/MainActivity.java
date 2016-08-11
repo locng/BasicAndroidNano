@@ -99,11 +99,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+        addProduct.setVisibility(View.GONE);
+        listView.setVisibility(View.GONE);
         Product currentProduct = adapter.getItem(position);
         Log.d("onItemClick",currentProduct.toString());
         //Add new product to database
-        Bundle bundle = new Bundle();
-        Fragment f = ProductDetail.newInstance(null,null, currentProduct);
+        Fragment f = ProductDetail.newInstance(currentProduct);
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.placeholder, f);

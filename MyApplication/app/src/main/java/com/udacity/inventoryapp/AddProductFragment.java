@@ -37,14 +37,10 @@ import java.io.IOException;
 public class AddProductFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
     private static final int READ_REQUEST_CODE = 3;
     OnDataChangeListener listener;
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
     String productImageLocation;
     ProductDBHelper mDbHelper;
     ImageView productImage;
@@ -67,8 +63,6 @@ public class AddProductFragment extends Fragment {
     public static AddProductFragment newInstance(String param1, String param2) {
         AddProductFragment fragment = new AddProductFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -77,8 +71,6 @@ public class AddProductFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
@@ -103,7 +95,7 @@ public class AddProductFragment extends Fragment {
                 final String quantity = productQuantity.getText().toString();
                 final String supplier = productSupplier.getText().toString();
                 if (invalidateAllField(name, price, quantity, supplier)) {
-                    Product product = new Product(name, Float.parseFloat(price), Integer.parseInt(quantity), Integer.parseInt(quantity), supplier, productImageLocation);
+                    Product product = new Product(name, Double.parseDouble(price), Integer.parseInt(quantity), Integer.parseInt(quantity), supplier, productImageLocation);
                     mDbHelper = new ProductDBHelper(AddProductFragment.this.getContext());
                     mDbHelper.open();
                     if (mDbHelper.addNewProduct(product) > 0){
@@ -145,7 +137,7 @@ public class AddProductFragment extends Fragment {
         if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(price) && !TextUtils.isEmpty(quantity) && !TextUtils.isEmpty(supplier)) {
             return true;
         }
-        return true;
+        return false;
     }
 
 

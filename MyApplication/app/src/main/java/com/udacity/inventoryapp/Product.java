@@ -1,18 +1,21 @@
 package com.udacity.inventoryapp;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by nloc on 8/11/2016.
  */
-public class Product {
+public class Product implements Parcelable {
     private int productId;
     private String productName;
-    private float productPrice;
+    private double productPrice;
     private int productQuantity;
     private int productRemaining;
     private String productSupplier;
     private String productImageLocation;
 
-    public Product(int productId, String productImageLocation, String productName, float productPrice, int productQuantity, int productRemaining, String supplier) {
+    public Product(int productId, String productImageLocation, String productName, double productPrice, int productQuantity, int productRemaining, String supplier) {
         this.productId = productId;
         this.productImageLocation = productImageLocation;
         this.productName = productName;
@@ -22,7 +25,7 @@ public class Product {
         this.productSupplier = supplier;
     }
 
-    public Product(String productName, float productPrice, int productQuantity, int productRemaining, String productSupplier, String productImageLocation) {
+    public Product(String productName, double productPrice, int productQuantity, int productRemaining, String productSupplier, String productImageLocation) {
         this.productName = productName;
         this.productPrice = productPrice;
         this.productQuantity = productQuantity;
@@ -46,7 +49,7 @@ public class Product {
         return productPrice;
     }
 
-    public void setProductPrice(float productPrice) {
+    public void setProductPrice(double productPrice) {
         this.productPrice = productPrice;
     }
 
@@ -102,4 +105,43 @@ public class Product {
                 ", productImageLocation='" + productImageLocation + '\'' +
                 '}';
     }
+
+    protected Product(Parcel in) {
+        productId = in.readInt();
+        productName = in.readString();
+        productPrice = in.readFloat();
+        productQuantity = in.readInt();
+        productRemaining = in.readInt();
+        productSupplier = in.readString();
+        productImageLocation = in.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(productId);
+        dest.writeString(productName);
+        dest.writeDouble(productPrice);
+        dest.writeInt(productQuantity);
+        dest.writeInt(productRemaining);
+        dest.writeString(productSupplier);
+        dest.writeString(productImageLocation);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<Product> CREATOR = new Parcelable.Creator<Product>() {
+        @Override
+        public Product createFromParcel(Parcel in) {
+            return new Product(in);
+        }
+
+        @Override
+        public Product[] newArray(int size) {
+            return new Product[size];
+        }
+    };
 }

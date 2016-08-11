@@ -3,6 +3,7 @@ package com.udacity.inventoryapp;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
@@ -25,6 +26,7 @@ public class ProductAdapter extends ArrayAdapter<Product> {
         super(context, 0, objects);
     }
 
+    ImageView imageView;
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View v = convertView;
@@ -33,7 +35,7 @@ public class ProductAdapter extends ArrayAdapter<Product> {
             v = LayoutInflater.from(getContext()).inflate(R.layout.list_item,parent, false);
         }
         Log.d(this.getClass().getSimpleName(),"pos: " + position + product.toString());
-        ImageView imageView = (ImageView)v.findViewById(R.id.thumbnail);
+        imageView = (ImageView)v.findViewById(R.id.thumbnail);
         TextView name = (TextView)v.findViewById(R.id.productName);
         TextView price = (TextView)v.findViewById(R.id.productPrice);
         TextView quantity = (TextView)v.findViewById(R.id.productQuantity);
@@ -45,16 +47,34 @@ public class ProductAdapter extends ArrayAdapter<Product> {
         remaining.setText(Integer.toString(product.getProductRemaining()));
 
         if (!TextUtils.isEmpty(product.getProductImageLocation())){
-        try {
-            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), Uri.parse(product.getProductImageLocation()));
-            if (bitmap!= null)
-            imageView.setImageBitmap(bitmap);
-            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        } catch (IOException e) {
-            e.printStackTrace();
-
-        }
+            ImageDisplay imageDisplay = new ImageDisplay();
+            imageDisplay.execute(product.getProductImageLocation());
+//        try {
+//            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), Uri.parse(product.getProductImageLocation()));
+//            if (bitmap!= null)
+//            imageView.setImageBitmap(bitmap);
+//            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
         }
         return v;
     }
+   class ImageDisplay extends AsyncTask<String, Void, Bitmap> {
+       @Override
+       protected Bitmap doInBackground(String... uris) {
+           Bitmap bitmap = null;
+           try {
+               bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), Uri.parse(uris[0]));
+           } catch (IOException e) {
+               e.printStackTrace();
+           }
+           return bitmap;
+       }
+
+       @Override
+        protected void onPostExecute(Bitmap bitmap) {
+            imageView.setImageBitmap(bitmap);
+        }
+    };
 }

@@ -23,7 +23,6 @@ import java.io.Serializable;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link ProductDetail.OnFragmentInteractionListener} interface
  * to handle interaction events.
  * Use the {@link ProductDetail#newInstance} factory method to
  * create an instance of this fragment.
@@ -31,38 +30,21 @@ import java.io.Serializable;
 public class ProductDetail extends Fragment implements View.OnClickListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-    private static final String ARG_PARAM3 = "param3";
+    private static final String PRODUCT_KEY = "PRODUCT_KEY";
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
     private Product product;
     ProductDBHelper mDbHelper;
-
-    private OnFragmentInteractionListener mListener;
+    private OnDataChangeListener listener;
 
     public ProductDetail() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ProductDetail.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ProductDetail newInstance(String param1, String param2, Product product) {
+    public static ProductDetail newInstance(Product product) {
         ProductDetail fragment = new ProductDetail();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        args.putE(ARG_PARAM3, (Serializable) product);
-        args.putBundle(ARG_PARAM3, product);
+        args.putParcelable(PRODUCT_KEY, product);
         fragment.setArguments(args);
         return fragment;
     }
@@ -71,9 +53,7 @@ public class ProductDetail extends Fragment implements View.OnClickListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-            product = (Product) getArguments().getSerializable(ARG_PARAM3);
+            product = getArguments().getParcelable(PRODUCT_KEY);
         }
         mDbHelper = new ProductDBHelper(getContext());
         mDbHelper.open();
@@ -89,6 +69,8 @@ public class ProductDetail extends Fragment implements View.OnClickListener {
         TextView productPrice = (TextView)v.findViewById(R.id.productPrice);
         productQuantity = (EditText) v.findViewById(R.id.productQuantity);
         Button btUpdate = (Button)v.findViewById(R.id.btUpdate);
+        Button btDelete = (Button)v.findViewById(R.id.bt_delete);
+        btDelete.setOnClickListener(this);
         btUpdate.setOnClickListener(this);
         TextView productSupplier = (TextView)v.findViewById(R.id.productSupplier);
 
@@ -100,28 +82,21 @@ public class ProductDetail extends Fragment implements View.OnClickListener {
         return v;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-//        if (context instanceof OnFragmentInteractionListener) {
-//            mListener = (OnFragmentInteractionListener) context;
-//        } else {
-//            throw new RuntimeException(context.toString()
-//                    + " must implement OnFragmentInteractionListener");
-//        }
+        if (context instanceof OnDataChangeListener) {
+            listener = (OnDataChangeListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnDataChangeListener");
+        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+        listener = null;
     }
 
     @Override
@@ -132,16 +107,19 @@ public class ProductDetail extends Fragment implements View.OnClickListener {
             if (quantity > 0){
                 product.setProductQuantity(quantity);
                 mDbHelper.updateProductEntry(product);
+                listener.onDataChanged();
+                Toast.makeText(getContext(), "Product updated", Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(getContext(),"Input must be positive", Toast.LENGTH_SHORT);
+                Toast.makeText(getContext(),"Input must be positive", Toast.LENGTH_SHORT).show();
             }
         } else if (ResId == R.id.bt_delete){
-            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            AlertDialog.Builder builder = new AlertDialog.Builder(this.getContext());
             builder.setMessage(R.string.confirm_delete_msg)
                     .setPositiveButton(R.string.yes_msg, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             mDbHelper.deleteProductEntry(product);
+                            listener.onDataChanged();
                         }
                     })
                     .setNegativeButton(R.string.no_msg, new DialogInterface.OnClickListener() {
@@ -149,22 +127,9 @@ public class ProductDetail extends Fragment implements View.OnClickListener {
                         public void onClick(DialogInterface dialogInterface, int i) {
                             return;
                         }
-                    }).create();
+                    });
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
         }
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
     }
 }

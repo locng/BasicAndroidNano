@@ -21,7 +21,7 @@ public class ProductDBHelper extends SQLiteOpenHelper {
 
     private static final String TEXT_TYPE = " TEXT";
     private static final String INTEGER_TYPE = " INTEGER";
-    private static final String REAL_TYPE = " INTEGER";
+    private static final String REAL_TYPE = " REAL";
     private static final String COMMA_SEP = ", ";
 
     public static final String SQL_CREATE_ENTRIES =
@@ -181,7 +181,7 @@ public class ProductDBHelper extends SQLiteOpenHelper {
 
         product.setProductId(c.getInt(c.getColumnIndexOrThrow(ProductContract.ProductEntry.COLUMN_ID)));
         product.setProductName(c.getString(c.getColumnIndexOrThrow(ProductContract.ProductEntry.COLUMN_NAME)));
-        product.setProductPrice(c.getFloat(c.getColumnIndexOrThrow(ProductContract.ProductEntry.COLUMN_PRICE)));
+        product.setProductPrice(c.getDouble(c.getColumnIndexOrThrow(ProductContract.ProductEntry.COLUMN_PRICE)));
         product.setProductQuantity(c.getInt(c.getColumnIndexOrThrow(ProductContract.ProductEntry.COLUMN_QUANTITY)));
         product.setProductRemaining(c.getInt(c.getColumnIndexOrThrow(ProductContract.ProductEntry.COLUMN_REMAINING)));
         product.setProductImageLocation(c.getString(c.getColumnIndexOrThrow(ProductContract.ProductEntry.COLUMN_IMAGE_LOCATION)));
