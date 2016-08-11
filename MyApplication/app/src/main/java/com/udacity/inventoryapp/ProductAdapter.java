@@ -34,7 +34,6 @@ public class ProductAdapter extends ArrayAdapter<Product> {
         if (v == null){
             v = LayoutInflater.from(getContext()).inflate(R.layout.list_item,parent, false);
         }
-        Log.d(this.getClass().getSimpleName(),"pos: " + position + product.toString());
         imageView = (ImageView)v.findViewById(R.id.thumbnail);
         TextView name = (TextView)v.findViewById(R.id.productName);
         TextView price = (TextView)v.findViewById(R.id.productPrice);
@@ -49,14 +48,6 @@ public class ProductAdapter extends ArrayAdapter<Product> {
         if (!TextUtils.isEmpty(product.getProductImageLocation())){
             ImageDisplay imageDisplay = new ImageDisplay();
             imageDisplay.execute(product.getProductImageLocation());
-//        try {
-//            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), Uri.parse(product.getProductImageLocation()));
-//            if (bitmap!= null)
-//            imageView.setImageBitmap(bitmap);
-//            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
         }
         return v;
     }

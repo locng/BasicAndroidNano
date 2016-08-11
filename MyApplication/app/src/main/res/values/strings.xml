@@ -13,4 +13,7 @@
     <string name="confirm_delete_msg">Do you want to delete this product ?</string>
     <string name="yes_msg">Yes</string>
     <string name="no_msg">No</string>
+    <string name="confirm_quantity_updated">Product quantity updated</string>
+    <string name="confirm_quantity_warning">Input must be positive</string>
+    <string name="order">Order</string>
 </resources>

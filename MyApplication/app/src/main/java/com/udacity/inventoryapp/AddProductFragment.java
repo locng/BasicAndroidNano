@@ -1,7 +1,6 @@
 package com.udacity.inventoryapp;
 
 import android.app.Activity;
-import android.app.LoaderManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -11,7 +10,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.SharedElementCallback;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -35,12 +33,9 @@ import java.io.IOException;
  * create an instance of this fragment.
  */
 public class AddProductFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final int READ_REQUEST_CODE = 3;
     OnDataChangeListener listener;
 
-    // TODO: Rename and change types of parameters
     String productImageLocation;
     ProductDBHelper mDbHelper;
     ImageView productImage;
@@ -54,12 +49,8 @@ public class AddProductFragment extends Fragment {
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
      * @return A new instance of fragment AddProductFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static AddProductFragment newInstance(String param1, String param2) {
         AddProductFragment fragment = new AddProductFragment();
         Bundle args = new Bundle();
@@ -79,14 +70,14 @@ public class AddProductFragment extends Fragment {
                              Bundle savedInstanceState) {
         if (container == null) return null;
         // Inflate the layout for this fragment
-        View v =  inflater.inflate(R.layout.fragment_add_product, container, false);
-        final EditText productname = (EditText)v.findViewById(R.id.name);
-        final EditText productPrice = (EditText)v.findViewById(R.id.price);
-        final EditText productQuantity = (EditText)v.findViewById(R.id.quantity);
-        final EditText productSupplier = (EditText)v.findViewById(R.id.supplier);
-        productImage = (ImageView)v.findViewById(R.id.productImage);
+        View v = inflater.inflate(R.layout.fragment_add_product, container, false);
+        final EditText productname = (EditText) v.findViewById(R.id.name);
+        final EditText productPrice = (EditText) v.findViewById(R.id.price);
+        final EditText productQuantity = (EditText) v.findViewById(R.id.quantity);
+        final EditText productSupplier = (EditText) v.findViewById(R.id.supplier);
+        productImage = (ImageView) v.findViewById(R.id.productImage);
 
-        Button btAdd = (Button)v.findViewById(R.id.bt_add);
+        Button btAdd = (Button) v.findViewById(R.id.bt_add);
         btAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -98,19 +89,20 @@ public class AddProductFragment extends Fragment {
                     Product product = new Product(name, Double.parseDouble(price), Integer.parseInt(quantity), Integer.parseInt(quantity), supplier, productImageLocation);
                     mDbHelper = new ProductDBHelper(AddProductFragment.this.getContext());
                     mDbHelper.open();
-                    if (mDbHelper.addNewProduct(product) > 0){
-                        Toast.makeText(getContext(),"Product added", Toast.LENGTH_SHORT).show();
-                    }else {
-                        Toast.makeText(getContext(),"Fail to add product", Toast.LENGTH_SHORT).show();
+                    if (mDbHelper.addNewProduct(product) > 0) {
+                        Toast.makeText(getContext(), "Product added", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getContext(), "Fail to add product", Toast.LENGTH_SHORT).show();
                     }
                     mDbHelper.close();
-                    listener.onDataChanged();
-
+                    listener.onProductAdded();
+                } else {
+                    Toast.makeText(getContext(), "All fields are required", Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
-        Button btChangeImage = (Button)v.findViewById(R.id.bt_addImage);
+        Button btChangeImage = (Button) v.findViewById(R.id.bt_addImage);
         btChangeImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -120,6 +112,7 @@ public class AddProductFragment extends Fragment {
                     protected Bitmap doInBackground(Uri... uris) {
                         return getBitmapFromUri(uris[0]);
                     }
+
                     @Override
                     protected void onPostExecute(Bitmap bitmap) {
                         productImage.setImageBitmap(bitmap);
@@ -132,7 +125,7 @@ public class AddProductFragment extends Fragment {
         return v;
     }
 
-    private boolean invalidateAllField(String name, String price, String quantity, String supplier){
+    private boolean invalidateAllField(String name, String price, String quantity, String supplier) {
         Log.d("", name + "," + price + "," + quantity + "," + supplier);
         if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(price) && !TextUtils.isEmpty(quantity) && !TextUtils.isEmpty(supplier)) {
             return true;
@@ -164,7 +157,9 @@ public class AddProductFragment extends Fragment {
         startActivityForResult(intent, READ_REQUEST_CODE);
         // END_INCLUDE (use_open_document_intent)
     }
+
     Uri uri = null;
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
         // BEGIN_INCLUDE (parse_open_document_response)
@@ -180,7 +175,7 @@ public class AddProductFragment extends Fragment {
             if (resultData != null) {
                 uri = resultData.getData();
                 productImageLocation = uri.toString();
-                Log.d("", "Image location :"+ productImageLocation);
+                Log.d("", "Image location :" + productImageLocation);
                 //Return bitmap for product image
                 displayImage(uri);
             }
@@ -188,13 +183,14 @@ public class AddProductFragment extends Fragment {
         }
     }
 
-    private void displayImage(Uri uri){
+    private void displayImage(Uri uri) {
 
         AsyncTask<Uri, Void, Bitmap> imageLoadAsyncTask = new AsyncTask<Uri, Void, Bitmap>() {
             @Override
             protected Bitmap doInBackground(Uri... uris) {
                 return getBitmapFromUri(uris[0]);
             }
+
             @Override
             protected void onPostExecute(Bitmap bitmap) {
                 productImage.setImageBitmap(bitmap);
@@ -203,7 +199,9 @@ public class AddProductFragment extends Fragment {
         };
         imageLoadAsyncTask.execute(uri);
     }
-    /** Create a Bitmap from the URI for that image and return it.
+
+    /**
+     * Create a Bitmap from the URI for that image and return it.
      *
      * @param uri the Uri for the image to return.
      */

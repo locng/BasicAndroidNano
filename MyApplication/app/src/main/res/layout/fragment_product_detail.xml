@@ -48,6 +48,11 @@
             <TextView android:id="@+id/productSupplier"
                 android:layout_marginLeft="16dp"
                 android:text="placeholder"/>
+            <Button
+                android:id="@+id/btOrder"
+                android:text="@string/order"
+                android:layout_marginLeft="16dp"
+                />
         </TableRow>
     </TableLayout>
 <Button
