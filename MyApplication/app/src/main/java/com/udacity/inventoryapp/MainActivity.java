@@ -8,8 +8,10 @@ import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -17,7 +19,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, OnDataChangeListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, OnDataChangeListener, AdapterView.OnItemClickListener {
 
     Button addProduct;
     ProductDBHelper mDbHelper;
@@ -40,6 +42,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         productList = new ArrayList<>();
         adapter = new ProductAdapter(this, productList);
         listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(this);
+
         if (mDbHelper.getProductCount() <= 0) {
             listView.setVisibility(View.GONE);
         } else {
@@ -90,5 +95,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         adapter.clear();
         productList.addAll(mDbHelper.fetchAllProductEntry());
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+        Product currentProduct = adapter.getItem(position);
+        Log.d("onItemClick",currentProduct.toString());
+        //Add new product to database
+        Bundle bundle = new Bundle();
+        Fragment f = ProductDetail.newInstance(null,null, currentProduct);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.placeholder, f);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 }

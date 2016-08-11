@@ -107,9 +107,9 @@ public class AddProductFragment extends Fragment {
                     mDbHelper = new ProductDBHelper(AddProductFragment.this.getContext());
                     mDbHelper.open();
                     if (mDbHelper.addNewProduct(product) > 0){
-                        Toast.makeText(getContext(),"Add OK", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(),"Product added", Toast.LENGTH_SHORT).show();
                     }else {
-                        Toast.makeText(getContext(),"Fail to add", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(),"Fail to add product", Toast.LENGTH_SHORT).show();
                     }
                     mDbHelper.close();
                     listener.onDataChanged();

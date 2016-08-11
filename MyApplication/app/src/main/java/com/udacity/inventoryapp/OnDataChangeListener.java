@@ -5,4 +5,5 @@ package com.udacity.inventoryapp;
  */
 interface OnDataChangeListener {
     void onDataChanged();
+    Product onProductSelected(int position);
 }

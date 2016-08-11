@@ -96,7 +96,7 @@ public class ProductDBHelper extends SQLiteOpenHelper {
     /*
     * Read out one product
     * */
-    public Cursor fetchProductEntry(long rowId) throws SQLException {
+    public Product fetchProductEntry(long rowId) throws SQLException {
         // Define a projection that specifies which columns from the database
         // you will actually use after this query.
         String[] projection = {
@@ -115,7 +115,7 @@ public class ProductDBHelper extends SQLiteOpenHelper {
         if (cursor != null) {
             cursor.moveToFirst();
         }
-        return cursor;
+        return cursorToProduct(cursor);
     }
 
     public int getProductCount() throws SQLException {
