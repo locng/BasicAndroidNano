@@ -8,7 +8,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 public class ProductDBHelper extends SQLiteOpenHelper {
@@ -21,7 +20,7 @@ public class ProductDBHelper extends SQLiteOpenHelper {
 
     private static final String TEXT_TYPE = " TEXT";
     private static final String INTEGER_TYPE = " INTEGER";
-    private static final String REAL_TYPE = " INTEGER";
+    private static final String REAL_TYPE = " REAL";
     private static final String COMMA_SEP = ", ";
 
     public static final String SQL_CREATE_ENTRIES =
@@ -62,7 +61,8 @@ public class ProductDBHelper extends SQLiteOpenHelper {
         //Get data repository in write mode
         db = this.getWritableDatabase();
     }
-    public void close(){
+
+    public void close() {
         db.close();
     }
 
@@ -70,7 +70,7 @@ public class ProductDBHelper extends SQLiteOpenHelper {
     * Create a new product entry using the name, price and quantity provided.
     * if created successfully, return the new rowId for that one, otherwise return -1
     * */
-    public long addNewProduct( Product product) {
+    public long addNewProduct(Product product) {
 
         // Create a new map of values, where column names are the keys
         ContentValues initialValues = new ContentValues();
@@ -96,7 +96,7 @@ public class ProductDBHelper extends SQLiteOpenHelper {
     /*
     * Read out one product
     * */
-    public Cursor fetchProductEntry(long rowId) throws SQLException {
+    public Product fetchProductEntry(long rowId) throws SQLException {
         // Define a projection that specifies which columns from the database
         // you will actually use after this query.
         String[] projection = {
@@ -115,7 +115,7 @@ public class ProductDBHelper extends SQLiteOpenHelper {
         if (cursor != null) {
             cursor.moveToFirst();
         }
-        return cursor;
+        return cursorToProduct(cursor);
     }
 
     public int getProductCount() throws SQLException {
@@ -132,6 +132,7 @@ public class ProductDBHelper extends SQLiteOpenHelper {
         }
         return 0;
     }
+
     public List<Product> fetchAllProductEntry() throws SQLException {
         List<Product> allProducts = new ArrayList<>();
         // Define a projection that specifies which columns from the database
@@ -157,6 +158,7 @@ public class ProductDBHelper extends SQLiteOpenHelper {
         }
         return allProducts;
     }
+
     /*
     * Database update
     * */
@@ -181,7 +183,7 @@ public class ProductDBHelper extends SQLiteOpenHelper {
 
         product.setProductId(c.getInt(c.getColumnIndexOrThrow(ProductContract.ProductEntry.COLUMN_ID)));
         product.setProductName(c.getString(c.getColumnIndexOrThrow(ProductContract.ProductEntry.COLUMN_NAME)));
-        product.setProductPrice(c.getFloat(c.getColumnIndexOrThrow(ProductContract.ProductEntry.COLUMN_PRICE)));
+        product.setProductPrice(c.getDouble(c.getColumnIndexOrThrow(ProductContract.ProductEntry.COLUMN_PRICE)));
         product.setProductQuantity(c.getInt(c.getColumnIndexOrThrow(ProductContract.ProductEntry.COLUMN_QUANTITY)));
         product.setProductRemaining(c.getInt(c.getColumnIndexOrThrow(ProductContract.ProductEntry.COLUMN_REMAINING)));
         product.setProductImageLocation(c.getString(c.getColumnIndexOrThrow(ProductContract.ProductEntry.COLUMN_IMAGE_LOCATION)));
