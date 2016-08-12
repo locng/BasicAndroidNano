@@ -90,7 +90,9 @@
             <Button
                 android:id="@+id/bt_order"
                 android:layout_marginRight="16dp"
-                android:text="@string/order" />
+                android:text="@string/order"
+                android:focusable="false"
+                android:focusableInTouchMode="false"/>
 
         </TableRow>
     </TableLayout>

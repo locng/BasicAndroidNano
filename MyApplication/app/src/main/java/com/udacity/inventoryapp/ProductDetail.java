@@ -102,6 +102,8 @@ public class ProductDetail extends Fragment implements View.OnClickListener {
             int quantity = Integer.valueOf(productQuantity.getText().toString());
             if (quantity > 0) {
                 product.setProductQuantity(quantity);
+                //When quantity updated, it's supposed that remaining value will be reset.
+                product.setProductRemaining(quantity);
                 mDbHelper.updateProductEntry(product);
                 listener.onProductQuantityUpdated();
                 Toast.makeText(getContext(), R.string.confirm_quantity_updated, Toast.LENGTH_SHORT).show();

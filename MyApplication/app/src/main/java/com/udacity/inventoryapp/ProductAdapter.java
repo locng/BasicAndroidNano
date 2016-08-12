@@ -27,21 +27,35 @@ public class ProductAdapter extends ArrayAdapter<Product> {
         super(context, 0, objects);
     }
 
-    ImageView imageView;
+    ViewHolder viewHolder;
+
+    static class ViewHolder{
+        TextView name;
+        TextView price;
+        TextView quantity;
+        TextView remaining;
+        ImageView imageView;
+        Button order;
+    }
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View v = convertView;
         final Product product = getItem(position);
         if (v == null){
             v = LayoutInflater.from(getContext()).inflate(R.layout.list_item,parent, false);
+            viewHolder = new ViewHolder();
+            viewHolder.name = (TextView)v.findViewById(R.id.productName);
+            viewHolder.price = (TextView)v.findViewById(R.id.productPrice);
+            viewHolder.quantity = (TextView)v.findViewById(R.id.productQuantity);
+            viewHolder.remaining = (TextView)v.findViewById(R.id.productRemaining);
+            viewHolder.order = (Button)v.findViewById(R.id.bt_order);
+            viewHolder.imageView = (ImageView)v.findViewById(R.id.thumbnail);
+            v.setTag(viewHolder);
+        }else{
+            viewHolder = (ViewHolder) v.getTag();
         }
-        imageView = (ImageView)v.findViewById(R.id.thumbnail);
-        TextView name = (TextView)v.findViewById(R.id.productName);
-        TextView price = (TextView)v.findViewById(R.id.productPrice);
-        TextView quantity = (TextView)v.findViewById(R.id.productQuantity);
-        TextView remaining = (TextView)v.findViewById(R.id.productRemaining);
-        Button order = (Button)v.findViewById(R.id.bt_order);
-        order.setOnClickListener(new View.OnClickListener() {
+
+        viewHolder.order.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ProductDBHelper mDbHelper = new ProductDBHelper(getContext());
@@ -60,10 +74,10 @@ public class ProductAdapter extends ArrayAdapter<Product> {
             }
         });
 
-        name.setText(product.getProductName());
-        price.setText(Double.toString(product.getProductPrice()));
-        quantity.setText(Integer.toString(product.getProductQuantity()));
-        remaining.setText(Integer.toString(product.getProductRemaining()));
+        viewHolder.name.setText(product.getProductName());
+        viewHolder.price.setText(Double.toString(product.getProductPrice()));
+        viewHolder.quantity.setText(Integer.toString(product.getProductQuantity()));
+        viewHolder.remaining.setText(Integer.toString(product.getProductRemaining()));
 
         if (!TextUtils.isEmpty(product.getProductImageLocation())){
             ImageDisplay imageDisplay = new ImageDisplay();
@@ -86,7 +100,7 @@ public class ProductAdapter extends ArrayAdapter<Product> {
 
        @Override
         protected void onPostExecute(Bitmap bitmap) {
-            imageView.setImageBitmap(bitmap);
+            viewHolder.imageView.setImageBitmap(bitmap);
         }
     };
 }
