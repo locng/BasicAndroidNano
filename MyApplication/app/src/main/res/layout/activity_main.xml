@@ -14,18 +14,27 @@
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
-    <ListView
-        android:id="@+id/list_"
-        android:orientation="vertical"
-        android:layout_below="@id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        />
+
     <LinearLayout
         android:id="@+id/placeholder"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+        <ListView
+            android:id="@+id/list_"
+            android:orientation="vertical"
+            android:layout_below="@id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+        <TextView
+            android:id="@+id/empty_tv"
+            android:text="@string/empty_product"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="16dp"/>
     </LinearLayout>
     <View
         android:layout_width="match_parent"
