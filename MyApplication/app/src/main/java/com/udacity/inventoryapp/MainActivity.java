@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +24,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     ListView listView;
     ProductAdapter adapter;
     List<Product> productList;
+    TextView noData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +33,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        noData = (TextView)findViewById(R.id.empty_tv);
 
         mDbHelper = new ProductDBHelper(this);
         mDbHelper.open();
@@ -41,12 +44,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         listView.setAdapter(adapter);
 
         listView.setOnItemClickListener(this);
+        listView.setEmptyView(noData);
 
-        if (mDbHelper.getProductCount() <= 0) {
-            listView.setVisibility(View.GONE);
-        } else {
+        if (mDbHelper.getProductCount() > 0) {
             listView.setVisibility(View.VISIBLE);
-            ;
+
             productList.addAll(mDbHelper.fetchAllProductEntry());
             adapter.notifyDataSetChanged();
         }
@@ -78,6 +80,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (resId == R.id.addProduct) {
             addProduct.setVisibility(View.GONE);
             listView.setVisibility(View.GONE);
+            noData.setVisibility(View.GONE);
 
             //Add new product to database
             Fragment f = new AddProductFragment();
