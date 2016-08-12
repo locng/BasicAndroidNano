@@ -16,5 +16,4 @@
     <string name="confirm_quantity_updated">Product quantity updated</string>
     <string name="confirm_quantity_warning">Input must be positive</string>
     <string name="order">Order</string>
-    <string name="empty_product">No product available</string>
 </resources>

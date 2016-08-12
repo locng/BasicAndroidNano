@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.io.IOException;
@@ -28,7 +29,7 @@ public class ProductAdapter extends ArrayAdapter<Product> {
 
     ViewHolder viewHolder;
 
-    static class ViewHolder {
+    static class ViewHolder{
         TextView name;
         TextView price;
         TextView quantity;
@@ -36,22 +37,21 @@ public class ProductAdapter extends ArrayAdapter<Product> {
         ImageView imageView;
         Button order;
     }
-
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View v = convertView;
         final Product product = getItem(position);
-        if (v == null) {
-            v = LayoutInflater.from(getContext()).inflate(R.layout.list_item, parent, false);
+        if (v == null){
+            v = LayoutInflater.from(getContext()).inflate(R.layout.list_item,parent, false);
             viewHolder = new ViewHolder();
-            viewHolder.name = (TextView) v.findViewById(R.id.productName);
-            viewHolder.price = (TextView) v.findViewById(R.id.productPrice);
-            viewHolder.quantity = (TextView) v.findViewById(R.id.productQuantity);
-            viewHolder.remaining = (TextView) v.findViewById(R.id.productRemaining);
-            viewHolder.order = (Button) v.findViewById(R.id.bt_order);
-            viewHolder.imageView = (ImageView) v.findViewById(R.id.thumbnail);
+            viewHolder.name = (TextView)v.findViewById(R.id.productName);
+            viewHolder.price = (TextView)v.findViewById(R.id.productPrice);
+            viewHolder.quantity = (TextView)v.findViewById(R.id.productQuantity);
+            viewHolder.remaining = (TextView)v.findViewById(R.id.productRemaining);
+            viewHolder.order = (Button)v.findViewById(R.id.bt_order);
+            viewHolder.imageView = (ImageView)v.findViewById(R.id.thumbnail);
             v.setTag(viewHolder);
-        } else {
+        }else{
             viewHolder = (ViewHolder) v.getTag();
         }
 
@@ -79,7 +79,7 @@ public class ProductAdapter extends ArrayAdapter<Product> {
         viewHolder.quantity.setText(Integer.toString(product.getProductQuantity()));
         viewHolder.remaining.setText(Integer.toString(product.getProductRemaining()));
 
-        if (!TextUtils.isEmpty(product.getProductImageLocation())) {
+        if (!TextUtils.isEmpty(product.getProductImageLocation())){
             ImageDisplay imageDisplay = new ImageDisplay();
             imageDisplay.execute(product.getProductImageLocation());
         }
@@ -87,22 +87,20 @@ public class ProductAdapter extends ArrayAdapter<Product> {
     }
 
     class ImageDisplay extends AsyncTask<String, Void, Bitmap> {
-        @Override
-        protected Bitmap doInBackground(String... uris) {
-            Bitmap bitmap = null;
-            try {
-                bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), Uri.parse(uris[0]));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return bitmap;
-        }
+       @Override
+       protected Bitmap doInBackground(String... uris) {
+           Bitmap bitmap = null;
+           try {
+               bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), Uri.parse(uris[0]));
+           } catch (IOException e) {
+               e.printStackTrace();
+           }
+           return bitmap;
+       }
 
-        @Override
+       @Override
         protected void onPostExecute(Bitmap bitmap) {
             viewHolder.imageView.setImageBitmap(bitmap);
         }
-    }
-
-    ;
+    };
 }
